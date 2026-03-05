@@ -20,4 +20,5 @@
       btw = "echo nixos running fin";
     };
   };
+  home.file.".config/tmux".source = ./../../../../submodules/tmux;
 }
