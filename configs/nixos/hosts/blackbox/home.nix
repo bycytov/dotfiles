@@ -20,5 +20,9 @@
       btw = "echo nixos running fin";
     };
   };
-  home.file.".config/tmux".source = ./../../../../submodules/tmux;
+  xdg.configFile."tmux" = {
+    source = config.lib.file.mkOutOfStoreSymlink "/home/sam/dotfiles/submodules/tmux";
+    recursive = true;
+  };
+#  home.file.".config/tmux".source = ./../../../../submodules/tmux;
 }
