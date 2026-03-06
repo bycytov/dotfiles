@@ -1,9 +1,15 @@
 { config, pkgs, ... }:
 
 {
+
+  imports = [
+    ./../../home-managerModules/LazyVim.nix
+  ];
+
   home.username = "sam";
   home.homeDirectory = "/home/sam";
   home.stateVersion = "25.11";
+
   programs.git = {
     enable = true;
     settings = {
@@ -20,12 +26,7 @@
       test = "echo nixos running fine";
     };
   };
-  programs.neovim = {
-    enable = true;
-    plugins = with pkgs.vimPlugins; [
-      lazy-nvim
-    ];
-  };
+
   home.packages = with pkgs; [
       tree
   ];
@@ -34,5 +35,4 @@
     source = config.lib.file.mkOutOfStoreSymlink "/home/sam/dotfiles/submodules/tmux";
     recursive = true;
   };
-#  home.file.".config/tmux".source = ./../../../../submodules/tmux;
 }
