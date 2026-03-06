@@ -29,6 +29,7 @@
 
   home.packages = with pkgs; [
     tree
+    neovim
   ];
 
   xdg.configFile."tmux" = {
