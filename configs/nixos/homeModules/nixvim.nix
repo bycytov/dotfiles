@@ -6,7 +6,7 @@
 }:
 {
   imports = [
-    <nixvim>.homeModules.nixvim
+    nixvim.homeModules.nixvim
   ];
 
   programs.nixvim.enable = true;
