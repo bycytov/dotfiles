@@ -20,8 +20,7 @@
       btw = "echo nixos running fin";
     };
   };
-  users.users.som = {
-    packages = with pkgs; [
+  home.packages = with pkgs; [
       tree
       neovim
       vimPlugins.LazyVim

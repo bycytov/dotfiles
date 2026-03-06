@@ -37,9 +37,9 @@
   users.users.sam = {
     isNormalUser = true;
     extraGroups = [ "wheel" "incus-admin" "video" "render" ];
-    packages = with pkgs; [
-      tree
-    ];
+#     packages = with pkgs; [
+#       tree
+#     ];
   };
 
   # programs.firefox.enable = true;
