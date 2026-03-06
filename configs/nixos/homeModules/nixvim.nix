@@ -10,4 +10,5 @@
   ];
 
   programs.nixvim.enable = true:
+
 }
