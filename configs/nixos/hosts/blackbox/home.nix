@@ -24,8 +24,8 @@
       tree
       neovim
       vimPlugins.LazyVim
-    ];
-  };
+  ];
+  
   xdg.configFile."tmux" = {
     source = config.lib.file.mkOutOfStoreSymlink "/home/sam/dotfiles/submodules/tmux";
     recursive = true;
