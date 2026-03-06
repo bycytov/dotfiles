@@ -52,7 +52,9 @@
     intel-gpu-tools
     unstable.mergerfs
     ncdu
+    nvim
     tmux
+    vimPlugins.LazyVim
     wget
   ];
 
