@@ -8,9 +8,10 @@
       url = "github:nix-community/home-manager/release-25.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    inputs.nixvim = {
+    nixvim = {
       url = "github:nix-community/nixvim";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
+    };
   };
 
   outputs = { self, nixpkgs, nixpkgs-unstable, home-manager, ... }: {
