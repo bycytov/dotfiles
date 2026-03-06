@@ -3,7 +3,7 @@
 {
 
   imports = [
-    ./../../home-managerModules/LazyVim.nix
+    #    ./../../home-managerModules/LazyVim.nix
   ];
 
   home.username = "sam";
@@ -14,7 +14,7 @@
     enable = true;
     settings = {
       user = {
-        name  = "bycytov";
+        name = "bycytov";
         email = "bycytov@gmail.com";
       };
       init.defaultBranch = "main";
@@ -28,9 +28,9 @@
   };
 
   home.packages = with pkgs; [
-      tree
+    tree
   ];
-  
+
   xdg.configFile."tmux" = {
     source = config.lib.file.mkOutOfStoreSymlink "/home/sam/dotfiles/submodules/tmux";
     recursive = true;
