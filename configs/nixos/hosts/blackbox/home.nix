@@ -3,7 +3,7 @@
 {
 
   imports = [
-    #    ./../../home-managerModules/LazyVim.nix
+   ./../../home-managerModules/lazyvim.nix
   ];
 
   home.username = "sam";
