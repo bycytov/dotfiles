@@ -4,7 +4,7 @@
   pkgs,
   ...
 }:
-
+{
   imports = [
     <nixvim>.homeModules.nixvim
   };
