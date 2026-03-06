@@ -8,13 +8,10 @@
       url = "github:nix-community/home-manager/release-25.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    nixvim = {
-      url = "github:nix-community/nixvim";
-      inputs.nixpkgs.follows = "nixpkgs-unstable";
-    };
+    lazyvim.url = "github:pfassina/lazyvim-nix";
   };
 
-  outputs = { self, nixpkgs, nixpkgs-unstable, home-manager, nixvim, ... }: {
+  outputs = { self, nixpkgs, nixpkgs-unstable, home-manager, lazyvim, ... }: {
     nixosConfigurations.blackbox = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
       modules = [
@@ -25,7 +22,7 @@
             useGlobalPkgs = true;
             useUserPackages = true;
             sharedModules = [
-              nixvim.homeManagerModules.nixvim
+              lazyvim.homeManagerModules.default
             ];
             users.sam = import ./hosts/blackbox/sam.nix;
             backupFileExtension = "backup";

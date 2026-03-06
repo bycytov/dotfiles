@@ -3,7 +3,7 @@
 {
 
   imports = [
-   ./../../homeModules/nixvim.nix
+   ./../../homeModules/lazyvim.nix
   ];
 
   home.username = "sam";
@@ -29,7 +29,6 @@
 
   home.packages = with pkgs; [
     tree
-    neovim
   ];
 
   xdg.configFile."tmux" = {
