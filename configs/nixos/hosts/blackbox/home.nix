@@ -25,6 +25,7 @@
     plugins = with pkgs.vimPlugins; [
       lazy-nvim
     ];
+  }
   home.packages = with pkgs; [
       tree
   ];
