@@ -1,11 +1,15 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 {
-  imports =
-    [ 
-      ./hardware-configuration.nix
-      ./../../nixosModules/virtualisation.nix
-    ];
+  imports = [
+    ./hardware-configuration.nix
+    ./../../nixosModules/virtualisation.nix
+  ];
 
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
@@ -17,10 +21,12 @@
     interfaces = {
       br0 = {
         useDHCP = false;
-        ipv4.addresses = [ {
-          address = "192.168.1.3";
-          prefixLength = 20;
-        } ];
+        ipv4.addresses = [
+          {
+            address = "192.168.1.3";
+            prefixLength = 20;
+          }
+        ];
       };
     };
     bridges = {
@@ -36,10 +42,15 @@
 
   users.users.sam = {
     isNormalUser = true;
-    extraGroups = [ "wheel" "incus-admin" "video" "render" ];
-#     packages = with pkgs; [
-#       tree
-#     ];
+    extraGroups = [
+      "wheel"
+      "incus-admin"
+      "video"
+      "render"
+    ];
+    #     packages = with pkgs; [
+    #       tree
+    #     ];
   };
 
   # programs.firefox.enable = true;
@@ -59,10 +70,13 @@
   services.openssh.enable = true;
   services.getty.autologinUser = "sam";
   services.tailscale.enable = true;
-  
+
   nix = {
     settings = {
-      experimental-features = [ "nix-command" "flakes" ];
+      experimental-features = [
+        "nix-command"
+        "flakes"
+      ];
       warn-dirty = true;
     };
   };
@@ -70,4 +84,3 @@
   system.stateVersion = "25.11";
 
 }
-
