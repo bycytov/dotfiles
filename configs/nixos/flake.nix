@@ -14,7 +14,7 @@
     };
   };
 
-  outputs = { self, nixpkgs, nixpkgs-unstable, home-manager, ... }: {
+  outputs = { self, nixpkgs, nixpkgs-unstable, home-manager, nixvim, ... }: {
     nixosConfigurations.blackbox = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
       modules = [
@@ -24,7 +24,10 @@
           home-manager = {
             useGlobalPkgs = true;
             useUserPackages = true;
-            users.sam = import ./hosts/blackbox/home.nix;
+            sharedModules = [
+              nixvim.homeManagerModules.nixvim
+            ];
+            users.sam = import ./hosts/blackbox/sam.nix;
             backupFileExtension = "backup";
           };
         }
