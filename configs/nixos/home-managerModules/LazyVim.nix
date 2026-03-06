@@ -33,7 +33,7 @@
     # Only lazy-nvim itself is loaded as a Neovim plugin.
     plugins = with pkgs.vimPlugins; [ lazy-nvim ];
 
-    initLua =
+    extraLuaConfig =
       # lua
       let
         treesitter = pkgs.vimPlugins.nvim-treesitter.withAllGrammars;
