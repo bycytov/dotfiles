@@ -17,13 +17,16 @@
   programs.bash = {
     enable = true;
     shellAliases = {
-      btw = "echo nixos running fin";
+      test = "echo nixos running fine";
     };
   };
+  programs.neovim = {
+    enable = true;
+    plugins = with pkgs.vimPlugins; [
+      lazy-nvim
+    ];
   home.packages = with pkgs; [
       tree
-      neovim
-      vimPlugins.LazyVim
   ];
   
   xdg.configFile."tmux" = {
