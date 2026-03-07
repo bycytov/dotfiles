@@ -3,7 +3,7 @@
 {
 
   imports = [
-   ./../../homeModules/lazyvim.nix
+  #  ./../../homeModules/lazyvim.nix
   ];
 
   home.username = "sam";
@@ -23,16 +23,17 @@
   programs.bash = {
     enable = true;
     shellAliases = {
-      test = "echo nixos running fine";
+      lg = "lazygit";
     };
   };
+  programs.lazygit.enable = true;
 
   home.packages = with pkgs; [
     tree
   ];
 
-  xdg.configFile."tmux" = {
-    source = config.lib.file.mkOutOfStoreSymlink "/home/sam/dotfiles/submodules/tmux";
-    recursive = true;
-  };
+#  xdg.configFile."tmux" = {
+#    source = config.lib.file.mkOutOfStoreSymlink "/home/sam/dotfiles/submodules/tmux";
+#    recursive = true;
+#  };
 }
