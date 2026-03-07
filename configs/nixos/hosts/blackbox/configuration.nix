@@ -8,7 +8,7 @@
 {
   imports = [
     ./hardware-configuration.nix
-    ./../../nixosModules/virtualisation.nix
+    ./../../nixosModules/incus.nix
   ];
 
   boot.loader.systemd-boot.enable = true;
@@ -47,13 +47,8 @@
       "incus-admin"
       "video"
       "render"
-    ];
-    #     packages = with pkgs; [
-    #       tree
-    #     ];
+    ]; 
   };
-
-  # programs.firefox.enable = true;
 
   environment.systemPackages = with pkgs; [
     btop
@@ -64,6 +59,7 @@
     unstable.mergerfs
     ncdu
     tmux
+    vim
     wget
   ];
 
@@ -78,6 +74,11 @@
         "flakes"
       ];
       warn-dirty = true;
+    };
+    gc = {
+      automatic = true;
+      dates = "weekly";
+      options = "--delete-older-than 7d";
     };
   };
 
