@@ -12,9 +12,11 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - /opt/tsbridge:/var/lib/tsbridge
     environment:
-      - TS_OAUTH_CLIENT_ID=k9hVAt7CEu11CNTRL
-      - TS_OAUTH_CLIENT_SECRET=tskey-client-k9hVAt7CEu11CNTRL-WzmNuJz5Ze2auSWZjPixd2DjTfUXDxJ36
+      - TS_OAUTH_CLIENT_ID=${TS_OAUTH_CLIENT_ID}
+      - TS_OAUTH_CLIENT_SECRET=${TS_OAUTH_CLIENT_SECRET}
     labels:
+      - tsbridge.tailscale.oauth_client_id_env=TS_OAUTH_CLIENT_ID
+      - tsbridge.tailscale.oauth_client_secret_env=TS_OAUTH_CLIENT_SECRET
       - tsbridge.tailscale.state_dir=/var/lib/tsbridge
       - tsbridge.tailscale.default_tags=tag:docker
     restart: unless-stopped

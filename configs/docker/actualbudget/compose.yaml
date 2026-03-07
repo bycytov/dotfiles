@@ -8,8 +8,8 @@ services:
       - /opt/actualbudget:/data
       - /opt/tsbridge/budget/certs:/certs
     environment:
-      - ACTUAL_HTTPS_KEY=/certs/budget.fold-blenny.ts.net.key
-      - ACTUAL_HTTPS_CERT=/certs/budget.fold-blenny.ts.net.crt
+      - ACTUAL_HTTPS_KEY=/certs/budget.${TS_TAILNET_NAME}.key
+      - ACTUAL_HTTPS_CERT=/certs/budget.${TS_TAILNET_NAME}.crt
       - ACTUAL_UPLOAD_FILE_SIZE_LIMIT_MB=50
       - ACTUAL_UPLOAD_FILE_SYNC_SIZE_LIMIT_MB=50
     labels:
