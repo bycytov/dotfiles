@@ -1,0 +1,45 @@
+services:
+  tsbridge:
+    container_name: tsbridge
+    image: ghcr.io/jtdowney/tsbridge:latest
+    command:
+      - --provider
+      - docker
+    #     - --verbose
+    networks:
+      - tsbridge
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /opt/tsbridge:/var/lib/tsbridge
+    environment:
+      - TS_OAUTH_CLIENT_ID=k9hVAt7CEu11CNTRL
+      - TS_OAUTH_CLIENT_SECRET=tskey-client-k9hVAt7CEu11CNTRL-WzmNuJz5Ze2auSWZjPixd2DjTfUXDxJ36
+    labels:
+      - tsbridge.tailscale.state_dir=/var/lib/tsbridge
+      - tsbridge.tailscale.default_tags=tag:docker
+    restart: unless-stopped
+#  whoami:
+#    image: traefik/whoami
+#    container_name: whoami
+#    command:
+#      - --cert
+#      - /certs/whoami.fold-blenny.ts.net.crt
+#      - --key
+#      - /certs/whoami.fold-blenny.ts.net.key
+#    volumes:
+#      - /opt/tsbridge/whoami/certs:/certs
+#    networks:
+#      - tsbridge
+#    ports:
+#      - 80:80
+#    labels:
+#      - tsbridge.enabled=true
+#      - tsbridge.service.name=whoami
+#      - tsbridge.service.funnel_enabled=true
+#      - tsbridge.service.backend_addr=https://whoami:80
+#      - tsbridge.service.insecure_skip_verify=true
+#    restart: unless-stopped
+networks:
+  tsbridge:
+    name: tsbridge
+    external: true
