@@ -10,18 +10,6 @@ config:
   security.nesting: "true"
   security.privileged: "false"
   security.protection.shift: "true"
-  volatile.base_image: 34178068f4ef048599348175a39a9d8cee4c185979ce3b616e8aa3bd10219071
-  volatile.cloud-init.instance-id: 8807bf81-6103-42f5-a47b-419ab8e64e51
-  volatile.eth0.host_name: veth8b977f80
-  volatile.eth0.hwaddr: 10:66:6a:ee:75:52
-  volatile.idmap.base: "0"
-  volatile.idmap.current: '[{"Isuid":true,"Isgid":false,"Hostid":1000000,"Nsid":0,"Maprange":1000000000},{"Isuid":false,"Isgid":true,"Hostid":1000000,"Nsid":0,"Maprange":1000000000}]'
-  volatile.idmap.next: '[{"Isuid":true,"Isgid":false,"Hostid":1000000,"Nsid":0,"Maprange":1000000000},{"Isuid":false,"Isgid":true,"Hostid":1000000,"Nsid":0,"Maprange":1000000000}]'
-  volatile.last_state.idmap: '[]'
-  volatile.last_state.power: RUNNING
-  volatile.last_state.ready: "false"
-  volatile.uuid: d410d275-ff6c-44aa-9694-f9fc5d1cb5db
-  volatile.uuid.generation: d410d275-ff6c-44aa-9694-f9fc5d1cb5db
 devices:
   disk-device-1:
     path: /mnt/nvme
