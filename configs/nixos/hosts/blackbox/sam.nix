@@ -31,9 +31,4 @@
   home.packages = with pkgs; [
     tree
   ];
-
-#  xdg.configFile."tmux" = {
-#    source = config.lib.file.mkOutOfStoreSymlink "/home/sam/dotfiles/submodules/tmux";
-#    recursive = true;
-#  };
 }
