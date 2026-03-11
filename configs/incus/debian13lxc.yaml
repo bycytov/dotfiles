@@ -1,13 +1,6 @@
 # incus launch images:debian/13 debian-config < ./debian13lxc.yaml
 architecture: x86_64
 config:
-  image.architecture: amd64
-  image.description: Debian trixie amd64 (20260302_05:24)
-  image.os: Debian
-  image.release: trixie
-  image.serial: "20260302_05:24"
-  image.type: squashfs
-  image.variant: default
   security.nesting: "true"
   security.privileged: "false"
   security.protection.shift: "true"
