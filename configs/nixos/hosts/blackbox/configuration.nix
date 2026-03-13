@@ -47,7 +47,7 @@
       "incus-admin"
       "video"
       "render"
-    ]; 
+    ];
   };
 
   environment.systemPackages = with pkgs; [

@@ -1,10 +1,16 @@
-{ den, ...}: {
+{ den, ... }:
+{
   # host aspect
   den.aspects.blackbox = {
     includes = [ den.aspects.incus ];
     # host NixOS configuration
     nixos =
-      { config, lib, pkgs, ... }:
+      {
+        config,
+        lib,
+        pkgs,
+        ...
+      }:
       {
         boot.loader.systemd-boot.enable = true;
         boot.loader.efi.canTouchEfiVariables = true;
@@ -42,7 +48,7 @@
             "incus-admin"
             "video"
             "render"
-          ]; 
+          ];
         };
 
         environment.systemPackages = with pkgs; [

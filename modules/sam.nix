@@ -5,6 +5,7 @@
     includes = [
       den.provides.primary-user
       (den.provides.user-shell "bash")
+      #      den.aspects.lazyvim
     ];
 
     homeManager =
@@ -18,10 +19,9 @@
               email = "bycytov@gmail.com";
             };
             init.defaultBranch = "main";
-          }; 
+          };
         };
         programs.bash = {
-        #############  enable = true;
           shellAliases = {
             lg = "lazygit";
           };

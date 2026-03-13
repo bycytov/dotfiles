@@ -11,34 +11,43 @@
     lazyvim.url = "github:pfassina/lazyvim-nix";
   };
 
-  outputs = { self, nixpkgs, nixpkgs-unstable, home-manager, lazyvim, ... }: {
-    nixosConfigurations.blackbox = nixpkgs.lib.nixosSystem {
-      system = "x86_64-linux";
-      modules = [
-        ./hosts/blackbox/configuration.nix 
-        home-manager.nixosModules.home-manager
-        {
-          home-manager = {
-            useGlobalPkgs = true;
-            useUserPackages = true;
-            sharedModules = [
-              lazyvim.homeManagerModules.default
+  outputs =
+    {
+      self,
+      nixpkgs,
+      nixpkgs-unstable,
+      home-manager,
+      lazyvim,
+      ...
+    }:
+    {
+      nixosConfigurations.blackbox = nixpkgs.lib.nixosSystem {
+        system = "x86_64-linux";
+        modules = [
+          ./hosts/blackbox/configuration.nix
+          home-manager.nixosModules.home-manager
+          {
+            home-manager = {
+              useGlobalPkgs = true;
+              useUserPackages = true;
+              sharedModules = [
+                lazyvim.homeManagerModules.default
+              ];
+              users.sam = import ./hosts/blackbox/sam.nix;
+              backupFileExtension = "backup";
+            };
+          }
+          {
+            nixpkgs.overlays = [
+              (final: prev: {
+                unstable = import nixpkgs-unstable {
+                  inherit (final) config;
+                  inherit (final.stdenv.hostPlatform) system;
+                };
+              })
             ];
-            users.sam = import ./hosts/blackbox/sam.nix;
-            backupFileExtension = "backup";
-          };
-        }
-        {
-          nixpkgs.overlays = [
-            (final: prev: {
-              unstable = import nixpkgs-unstable {
-                 inherit (final) config;
-                 inherit (final.stdenv.hostPlatform) system;
-              };
-            })
-          ];
-        }
-      ];
+          }
+        ];
+      };
     };
-  };
 }

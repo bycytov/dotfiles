@@ -2,7 +2,7 @@
 # then config their aspects in as many files you want
 {
   # tux user at igloo host.
-  den.hosts.x86_64-linux.blackbox.users.sam = { 
+  den.hosts.x86_64-linux.blackbox.users.sam = {
     classes = [ "homeManager" ];
   };
 
