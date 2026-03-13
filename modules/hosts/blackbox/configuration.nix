@@ -1,6 +1,7 @@
 { den, ...}: {
   # host aspect
   den.aspects.blackbox = {
+    includes = [ den.aspects.incus ];
     # host NixOS configuration
     nixos =
       { config, lib, pkgs, ... }:
