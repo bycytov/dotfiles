@@ -2,7 +2,10 @@
 {
   # host aspect
   den.aspects.blackbox = {
-    includes = [ den.aspects.incus ];
+    includes = [
+      den.aspects.incus
+      den.aspects.nix
+    ];
     # host NixOS configuration
     nixos =
       {
@@ -67,21 +70,6 @@
         services.openssh.enable = true;
         services.getty.autologinUser = "sam";
         services.tailscale.enable = true;
-
-        nix = {
-          settings = {
-            experimental-features = [
-              "nix-command"
-              "flakes"
-            ];
-            warn-dirty = true;
-          };
-          gc = {
-            automatic = true;
-            dates = "weekly";
-            options = "--delete-older-than 7d";
-          };
-        };
       };
 
     # host provides default home environment for its users
