@@ -4,6 +4,7 @@
   den.aspects.sam = {
     includes = [
       den.provides.primary-user
+      den._.bidirectional
       (den.provides.user-shell "bash")
       #      den.aspects.lazyvim
     ];

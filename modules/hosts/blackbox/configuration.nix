@@ -44,16 +44,6 @@
 
         time.timeZone = "America/Chicago";
 
-        users.users.sam = {
-          isNormalUser = true;
-          extraGroups = [
-            "wheel"
-            "incus-admin"
-            "video"
-            "render"
-          ];
-        };
-
         environment.systemPackages = with pkgs; [
           btop
           curl
