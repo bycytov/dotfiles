@@ -3,9 +3,10 @@
   # host aspect
   den.aspects.blackbox = {
     includes = [
-      den.aspects.nvim
-      den.aspects.incus
+      den.aspects.stable
       den.aspects.nix
+      den.aspects.incus
+      den.aspects.nvim
     ];
     # host NixOS configuration
     nixos =
@@ -54,7 +55,6 @@
           mergerfs
           ncdu
           tmux
-          vim
           wget
         ];
 

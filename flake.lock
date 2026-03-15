@@ -165,7 +165,7 @@
           "gen-luarc",
           "nixpkgs"
         ],
-        "nixpkgs-stable": "nixpkgs-stable"
+        "nixpkgs-stable": "nixpkgs-stable_2"
       },
       "locked": {
         "lastModified": 1723803910,
@@ -304,6 +304,21 @@
     },
     "nixpkgs-stable": {
       "locked": {
+        "lastModified": 1773524153,
+        "narHash": "sha256-Jms57zzlFf64ayKzzBWSE2SGvJmK+NGt8Gli71d9kmY=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "e9f278faa1d0c2fc835bd331d4666b59b505a410",
+        "type": "github"
+      },
+      "original": {
+        "id": "nixpkgs",
+        "ref": "nixos-25.11",
+        "type": "indirect"
+      }
+    },
+    "nixpkgs-stable_2": {
+      "locked": {
         "lastModified": 1720386169,
         "narHash": "sha256-NGKVY4PjzwAa4upkGtAMz1npHGoRzWotlSnVlqI40mo=",
         "owner": "NixOS",
@@ -398,6 +413,7 @@
         "nixpkgs-lib": [
           "nixpkgs"
         ],
+        "nixpkgs-stable": "nixpkgs-stable",
         "nvim": "nvim"
       }
     },
