@@ -20,6 +20,7 @@
     lazyvim.url = "github:pfassina/lazyvim-nix";
     nixpkgs.url = "https://channels.nixos.org/nixpkgs-unstable/nixexprs.tar.xz";
     nixpkgs-lib.follows = "nixpkgs";
+    nvim.url = "github:bycytov/dotfiles?dir=configs/nvim-nix";
   };
 
 }

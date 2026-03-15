@@ -3,6 +3,7 @@
   # host aspect
   den.aspects.blackbox = {
     includes = [
+      den.aspects.nvim
       den.aspects.incus
       den.aspects.nix
     ];
