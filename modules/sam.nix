@@ -33,6 +33,10 @@
 
     # user can provide NixOS configurations
     # to any host it is included on
-    # nixos = { pkgs, ... }: { };
+    nixos =
+      { pkgs, ... }:
+      {
+        security.sudo.wheelNeedsPassword = false;
+      };
   };
 }
