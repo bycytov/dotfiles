@@ -7,6 +7,7 @@
       den._.bidirectional
       (den.provides.user-shell "bash")
       #      den.aspects.lazyvim
+      den.aspects.helix
     ];
 
     homeManager =
