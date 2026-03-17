@@ -22,7 +22,6 @@
     nixpkgs.url = "https://channels.nixos.org/nixpkgs-unstable/nixexprs.tar.xz";
     nixpkgs-lib.follows = "nixpkgs";
     nixpkgs-stable.url = "nixpkgs/nixos-25.11";
-    nvim.url = "github:bycytov/dotfiles?dir=configs/nvim-nix";
   };
 
 }
