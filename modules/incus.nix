@@ -1,15 +1,6 @@
 { den, ... }:
 {
   den.aspects.incus = {
-    includes = [
-      den.lib.perUser
-      (
-        { host, user }:
-        {
-          nixos.users.users.${user.name}.extraGroups = [ "incus-admin" ];
-        }
-      )
-    ];
     nixos =
       { ... }:
       {

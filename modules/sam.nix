@@ -1,14 +1,17 @@
+
+
 { den, ... }:
 {
   # user aspect
   den.aspects.sam = {
     includes = [
       den.provides.primary-user
-      den._.bidirectional
+      den._.mutual-provider
       (den.provides.user-shell "bash")
       # den.aspects.lazyvim
       # den.aspects.helix
     ];
+    provides.blackbox.nixos.users.users.sam.extraGroups = [ "incus-admin" ];
 
     homeManager =
       { pkgs, ... }:
