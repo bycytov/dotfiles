@@ -2,7 +2,7 @@
 {
   den.aspects.incus = {
     includes = [
-      den.lib.take.atLeast
+      den.lib.perUser
       (
         { host, user }:
         {
