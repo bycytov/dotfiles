@@ -1,7 +1,10 @@
 { inputs, den, ... }:
 {
   flake-file.inputs = {
-    lazyvim.url = "github:pfassina/lazyvim-nix";
+    lazyvim = {
+      url = "github:pfassina/lazyvim-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
   den.aspects.lazyvim = {
     homeManager =
