@@ -55,19 +55,13 @@
           mergerfs
           ncdu
           tmux
+          tree
           wget
         ];
 
         services.openssh.enable = true;
         services.getty.autologinUser = "sam";
         services.tailscale.enable = true;
-      };
-
-    # host provides default home environment for its users
-    homeManager =
-      { pkgs, ... }:
-      {
-        home.packages = [ pkgs.tree ];
       };
   };
 }
