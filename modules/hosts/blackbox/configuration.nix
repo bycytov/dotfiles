@@ -6,7 +6,6 @@
       den.aspects.stable
       den.aspects.nix
       den.aspects.incus
-      # den.aspects.nvim
     ];
     # host NixOS configuration
     nixos =
