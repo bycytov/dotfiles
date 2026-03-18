@@ -5,7 +5,7 @@
   };
   den.aspects.stable = {
     nixos =
-      {  pkgs, ... }:
+      { pkgs, ... }:
       {
         nixpkgs.overlays = [
           (final: prev: {
