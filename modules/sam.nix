@@ -4,7 +4,7 @@
   den.aspects.sam = {
     includes = [
       den.provides.primary-user
-      den._.mutual-provider
+      den.provides.mutual-provider
       (den.provides.user-shell "bash")
       # den.aspects.lazyvim
       den.aspects.helix
@@ -24,21 +24,15 @@
             init.defaultBranch = "main";
           };
         };
-        programs.bash = {
-          shellAliases = {
-            lg = "lazygit";
-          };
-        };
+        programs.bash.shellAliases.lg = "lazygit";
         programs.lazygit.enable = true;
-        home.packages = [ pkgs.htop ];
+        home.packages = with pkgs; [
+          tree
+        ];
       };
 
     # user can provide NixOS configurations
     # to any host it is included on
-    nixos =
-      { pkgs, ... }:
-      {
-        security.sudo.wheelNeedsPassword = false;
-      };
+    nixos.security.sudo.wheelNeedsPassword = false;
   };
 }

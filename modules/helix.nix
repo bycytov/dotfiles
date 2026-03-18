@@ -8,7 +8,7 @@
   };
   den.aspects.helix = {
     homeManager =
-      { helix, pkgs, ... }:
+      { pkgs, ... }:
       {
         programs.helix = {
           enable = true;

@@ -6,6 +6,8 @@
       den.aspects.stable
       den.aspects.nix
       den.aspects.incus
+      (den.provides.tty-autologin "sam")
+      den.provides.hostname
     ];
     # host NixOS configuration
     nixos =
@@ -21,24 +23,14 @@
 
         networking = {
           firewall.enable = false;
-          hostName = "blackbox";
           nftables.enable = true;
           interfaces = {
             br0 = {
               useDHCP = false;
-              ipv4.addresses = [
-                {
-                  address = "192.168.1.3";
-                  prefixLength = 20;
-                }
-              ];
+              ipv4.addresses = [{ address = "192.168.1.3"; prefixLength = 20; }];
             };
           };
-          bridges = {
-            br0 = {
-              interfaces = [ "enp3s0" ];
-            };
-          };
+          bridges.br0.interfaces = [ "enp3s0" ];
           defaultGateway = "192.168.1.1";
           nameservers = [ "192.168.1.1" ];
         };
@@ -54,12 +46,10 @@
           mergerfs
           ncdu
           tmux
-          tree
           wget
         ];
 
         services.openssh.enable = true;
-        services.getty.autologinUser = "sam";
         services.tailscale.enable = true;
       };
   };
