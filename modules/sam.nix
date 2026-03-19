@@ -7,7 +7,8 @@
       den.provides.mutual-provider
       (den.provides.user-shell "bash")
       # den.aspects.lazyvim
-      den.aspects.helix
+      # den.aspects.helix
+      den.aspects.nvim
     ];
     provides.blackbox.nixos.users.users.sam.extraGroups = [ "incus-admin" ];
 
