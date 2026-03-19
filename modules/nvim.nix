@@ -24,7 +24,10 @@
               binds.whichKey = {
                 enable = true;
                 setupOpts = {
-                  incons.mapping = false;
+                  icons = {
+                    mappings = false;
+                    rules = false;
+                  };
                   preset = "helix";
                 };
               };
