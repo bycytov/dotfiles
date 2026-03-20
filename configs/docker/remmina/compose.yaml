@@ -1,0 +1,34 @@
+services:
+  remmina:
+    image: lscr.io/linuxserver/remmina:latest
+    container_name: remmina
+    networks:
+      - tsbridge
+    devices:
+      - /dev/dri:/dev/dri
+    security_opt:
+      - seccomp:unconfined
+    environment:
+      # - PIXELFLUX_WAYLAND=true
+      # - DRINODE=/dev/dri/renderD128
+      # - DRI_NODE=/dev/dri/renderD128
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Chicago
+      - CUSTOM_USER=${USER}
+      - PASSWORD=${PASS}
+    volumes:
+      - /opt/remmina:/config
+    labels:
+      - tsbridge.enabled=true
+      - tsbridge.service.name=connect
+      - tsbridge.service.funnel_enabled=true
+      - tsbridge.service.backend_addr=https://remmina:3001
+      - tsbridge.service.insecure_skip_verify=true
+      - tsbridge.service.ephemeral=true
+    shm_size: "1gb"
+    restart: unless-stopped
+networks:
+  tsbridge:
+    name: tsbridge
+    external: true
