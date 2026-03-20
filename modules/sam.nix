@@ -2,13 +2,18 @@
 {
   # user aspect
   den.aspects.sam = {
+
     includes = [
       den.provides.primary-user
       den.provides.mutual-provider
       (den.provides.user-shell "bash")
       den.aspects.nvim
     ];
-    provides.blackbox.nixos.users.users.sam.extraGroups = [ "incus-admin" ];
+
+    provides.blackbox.nixos = {
+      security.sudo.wheelNeedsPassword = false;
+      users.users.sam.extraGroups = [ "incus-admin" ];
+    };
 
     homeManager =
       { pkgs, ... }:
@@ -29,9 +34,5 @@
           tree
         ];
       };
-
-    # user can provide NixOS configurations
-    # to any host it is included on
-    nixos.security.sudo.wheelNeedsPassword = false;
   };
 }
