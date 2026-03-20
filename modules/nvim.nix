@@ -1,4 +1,4 @@
-{ inputs, den, ... }:
+{ inputs, ... }:
 {
   flake-file.inputs = {
     nvf = {
@@ -8,41 +8,39 @@
     };
   };
   den.aspects.nvim = {
-    homeManager =
-      { pkgs, ... }:
-      {
-        imports = [ inputs.nvf.homeManagerModules.default ];
-        programs.nvf = {
-          enable = true;
-          settings = {
-            vim = {
-              options = {
-                tabstop = 2;
-                shiftwidth = 2;
-              };
-              visuals.indent-blankline.enable = true;
-              binds.whichKey = {
-                enable = true;
-                setupOpts = {
-                  icons = {
-                    mappings = false;
-                    rules = false;
-                  };
-                  preset = "helix";
+    homeManager = { pkgs, ... }: {
+      imports = [ inputs.nvf.homeManagerModules.default ];
+      programs.nvf = {
+        enable = true;
+        settings = {
+          vim = {
+            options = {
+              tabstop = 2;
+              shiftwidth = 2;
+            };
+            visuals.indent-blankline.enable = true;
+            binds.whichKey = {
+              enable = true;
+              setupOpts = {
+                icons = {
+                  mappings = false;
+                  rules = false;
                 };
+                preset = "helix";
               };
-              telescope.enable = true;
-              autocomplete.nvim-cmp.enable = true;
-              lsp.enable = true;
-              languages = {
-                enableFormat = true;
-                enableTreesitter = true;
-                enableExtraDiagnostics = true;
-                nix.enable = true;
-              };
+            };
+            telescope.enable = true;
+            autocomplete.nvim-cmp.enable = true;
+            lsp.enable = true;
+            languages = {
+              enableFormat = true;
+              enableTreesitter = true;
+              enableExtraDiagnostics = true;
+              nix.enable = true;
             };
           };
         };
       };
+    };
   };
 }
