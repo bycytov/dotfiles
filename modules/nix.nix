@@ -1,4 +1,3 @@
-{ den, ... }:
 {
   den.aspects.nix = {
     # Owned configs per class
@@ -12,6 +11,10 @@
               "flakes"
             ];
             warn-dirty = true;
+          };
+          optimise = { 
+            automatic = true;
+            dates = "weekly";
           };
           gc = {
             automatic = true;
