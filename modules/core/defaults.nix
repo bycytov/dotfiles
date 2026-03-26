@@ -15,9 +15,6 @@
       den._.inputs'
       den._.self'
     ];
-
-    nixos.system.stateVersion = "25.11";
-    homeManager.home.stateVersion = "25.11";
   };
 }
 

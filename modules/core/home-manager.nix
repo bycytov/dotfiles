@@ -14,4 +14,8 @@
       };
     })
   ];
+
+  den.ctx.hm-user.includes = [{
+    homeManager.home.stateVersion = lib.mkDefault "25.11";
+  }];
 }

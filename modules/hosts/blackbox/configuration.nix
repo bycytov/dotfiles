@@ -31,8 +31,6 @@
           nameservers = [ "192.168.1.1" ];
         };
 
-        time.timeZone = "America/Chicago";
-
         environment.systemPackages = with pkgs; [
           btop
           curl
