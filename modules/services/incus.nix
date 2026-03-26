@@ -1,11 +1,11 @@
 { den, ... }:
 {
-  den.aspects.incus = {
+  den.aspects.incus = den.lib.perHost {
     nixos =
-      { ... }:
+      { lib, ... }:
       {
         virtualisation = {
-          kvmgt.enable = true;
+          kvmgt.enable = lib.mkDefault true;
           incus = {
             enable = true;
             ui.enable = true;

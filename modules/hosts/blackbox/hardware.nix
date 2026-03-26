@@ -1,8 +1,6 @@
 { den, ... }:
 {
-  # host aspect
   den.aspects.blackbox = {
-    # host NixOS configuration
     nixos =
       {
         config,
@@ -57,3 +55,4 @@
       };
   };
 }
+

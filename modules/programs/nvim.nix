@@ -1,4 +1,4 @@
-{ inputs, ... }:
+{ inputs, den, ... }:
 {
   flake-file.inputs = {
     nvf = {
@@ -7,13 +7,15 @@
       inputs.flake-parts.follows = "flake-parts";
     };
   };
-  den.aspects.nvim = {
-    homeManager = { pkgs, ... }: {
-      imports = [ inputs.nvf.homeManagerModules.default ];
-      programs.nvf = {
-        enable = true;
-        settings = {
-          vim = {
+
+  den.aspects.nvim = den.lib.perUser {
+    homeManager =
+      { pkgs, ... }:
+      {
+        imports = [ inputs.nvf.homeManagerModules.default ];
+        programs.nvf = {
+          enable = true;
+          settings.vim = {
             options = {
               tabstop = 2;
               shiftwidth = 2;
@@ -42,6 +44,5 @@
           };
         };
       };
-    };
   };
 }
