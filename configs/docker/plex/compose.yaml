@@ -8,10 +8,10 @@ services:
     environment:
       - PUID=1000
       - PGID=1000
-      - UMASK-002
+      - UMASK=002
       - TZ=America/Chicago
       - WEBUI_PORTS=32400/tcp
-      - PLEX_CLAIM_TOKEN=
+      - PLEX_CLAIM_TOKEN= # visit plex.tv/claim leave blank after initial claim
       - PLEX_ADVERTISE_URL=
       - PLEX_NO_AUTH_NETWORKS=192.168.1.0/24
       - PLEX_BETA_INSTALL=false
