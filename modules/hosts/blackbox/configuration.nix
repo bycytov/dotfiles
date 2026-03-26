@@ -44,8 +44,6 @@
           tmux
           wget
         ];
-
-        services.tailscale.enable = true;
       };
 
   };
