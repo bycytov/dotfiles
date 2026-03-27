@@ -17,6 +17,7 @@
         # ZFS Stuff
         boot.supportedFilesystems = [ "zfs" ];
         boot.zfs.forceImportRoot = false;
+        boot.zfs.extraPools = [ "incus" ];
         networking.hostId = "38ce88fa";
 
         networking = {
