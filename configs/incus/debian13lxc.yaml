@@ -5,11 +5,6 @@ config:
   security.privileged: "false"
   security.protection.shift: "true"
 devices:
-  disk-device-1:
-    path: /mnt/nvme
-    shift: "true"
-    source: /mnt/nvme
-    type: disk
   docker-dotfiles:
     path: /opt/docker
     shift: "true"
