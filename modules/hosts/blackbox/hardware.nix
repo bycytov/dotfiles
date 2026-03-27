@@ -45,11 +45,6 @@
           { device = "/dev/disk/by-uuid/de91d16b-8d3a-41b8-8dd0-ef79b5906fbe"; }
         ];
 
-        fileSystems."/mnt/nvme" = {
-          device = "/dev/disk/by-uuid/cdf629c2-c5c7-434d-8565-3a7ce38a0582";
-          fsType = "ext4";
-        };
-
         nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
         hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
       };

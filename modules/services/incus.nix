@@ -35,7 +35,7 @@
                     };
                     root = {
                       path = "/";
-                      pool = "default";
+                      pool = "incus";
                       type = "disk";
                     };
                   };
@@ -52,7 +52,7 @@
                     };
                     root = {
                       path = "/";
-                      pool = "default";
+                      pool = "incus";
                       type = "disk";
                     };
                   };
@@ -60,10 +60,10 @@
               ];
               storage_pools = [
                 {
-                  name = "default";
-                  driver = "dir";
+                  name = "incus";
+                  driver = "zfs";
                   config = {
-                    source = "/mnt/incus/default";
+                    source = "incus";
                   };
                 }
               ];

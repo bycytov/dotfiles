@@ -14,6 +14,11 @@
         boot.loader.systemd-boot.enable = true;
         boot.loader.efi.canTouchEfiVariables = true;
 
+        # ZFS Stuff
+        boot.supportedFilesystems = [ "zfs" ];
+        boot.zfs.forceImportRoot = false;
+        networking.hostId = "38ce88fa";
+
         networking = {
           firewall.enable = false;
           nftables.enable = true;
