@@ -39,7 +39,6 @@
               enableTreesitter = true;
               enableExtraDiagnostics = true;
               nix.enable = true;
-              yaml.enable = true;
             };
           };
         };
