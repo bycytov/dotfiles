@@ -14,18 +14,15 @@
 
       home.packages = with pkgs; [
         tree
-        (writeShellScriptBin "update-drone-image" ''
-          METADATA=$(nix build .#nixosConfigurations.drone.config.system.build.metadata --no-link --print-out-paths)
-          SQUASHFS=$(nix build .#nixosConfigurations.drone.config.system.build.squashfs --no-link --print-out-paths)
-
-          incus image delete nixos/custom/drone || true
-          incus image import --alias nixos/custom/drone "$METADATA"/tarball/*.tar.xz "$SQUASHFS"/*.squashfs
-        '')
+        (writeShellScriptBin "update-lxc-image" ''
+          HOST=$1
+          if [ -z "$HOST" ]; then echo "Usage: update-lxc-image <hostname>"; exit 1; fi
+          METADATA=$(nix build ".#nixosConfigurations.$HOST.config.system.build.metadata" --no-link --print-out-paths)
+          SQUASHFS=$(nix build ".#nixosConfigurations.$HOST.config.system.build.squashfs" --no-link --print-out-paths)
+          incus image delete "nixos/custom/$HOST" || true
+          incus image import --alias "nixos/custom/$HOST" "$METADATA"/tarball/*.tar.xz "$SQUASHFS"/*.squashfs
+        '') 
       ]; 
-
-
-
-
     };
 
     # Everything sam wants on every host he lives on

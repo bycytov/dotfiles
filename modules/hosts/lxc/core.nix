@@ -1,10 +1,8 @@
 { den, ... }:
 {
-  den.aspects.drone = {
+  den.aspects.lxc-core = {
     includes = with den.aspects; [
-
       nix-config # nix daemon settings
-
       (den._.tty-autologin "sam")
     ];
 
@@ -27,7 +25,6 @@
           networks."50-eth0" = {
             matchConfig.Name = "eth0";
             networkConfig = {
-              Address = "192.168.1.31/24";
               Gateway = "192.168.1.1";
               DNS = "192.168.1.1";
               IPv6AcceptRA = true;
