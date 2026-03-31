@@ -14,7 +14,18 @@
 
       home.packages = with pkgs; [
         tree
-      ];
+        (writeShellScriptBin "update-drone-image" ''
+          METADATA=$(nix build .#nixosConfigurations.drone.config.system.build.metadata --no-link --print-out-paths)
+          SQUASHFS=$(nix build .#nixosConfigurations.drone.config.system.build.squashfs --no-link --print-out-paths)
+
+          incus image delete nixos/custom/drone || true
+          incus image import --alias nixos/custom/drone "$METADATA"/tarball/*.tar.xz "$SQUASHFS"/*.squashfs
+        '')
+      ]; 
+
+
+
+
     };
 
     # Everything sam wants on every host he lives on
