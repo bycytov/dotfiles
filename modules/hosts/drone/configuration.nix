@@ -27,7 +27,9 @@
           networks."50-eth0" = {
             matchConfig.Name = "eth0";
             networkConfig = {
-              DHCP = "ipv4";
+              Address = "192.168.1.31/24";
+              Gateway = "192.168.1.1";
+              DNS = "192.168.1.1";
               IPv6AcceptRA = true;
             };
             linkConfig.RequiredForOnline = "routable";
