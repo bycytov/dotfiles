@@ -33,10 +33,7 @@
           };
         };
 
-        environment.systemPackages = with pkgs; [ fastfetch git ];
-
-        nix.settings.experimental-features = [ "nix-command" "flakes" ];
-        system.stateVersion = "25.11"; # Did you read the comment?
+        environment.systemPackages = with pkgs; [ fastfetch ];
       };
     };
 }
