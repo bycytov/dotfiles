@@ -1,0 +1,18 @@
+# update-lxc-image <hostnamee>
+# incus launch nixos/custom/<hostname> <hostname> < ./nixoslxc.yaml
+architecture: x86_64
+config:
+  security.nesting: "true"
+  security.privileged: "false"
+  security.protection.shift: "true"
+devices:
+  docker-dotfiles:
+    path: /opt/docker
+    shift: "true"
+    source: /home/sam/dotfiles/configs/docker
+    type: disk
+ephemeral: false
+profiles:
+- bridged
+stateful: false
+description: NixOS LXC
