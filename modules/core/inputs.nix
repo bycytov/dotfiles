@@ -10,7 +10,6 @@
     nixpkgs.url = "https://channels.nixos.org/nixpkgs-unstable/nixexprs.tar.xz";
     flake-file.url = "github:vic/flake-file";
     den.url = "github:vic/den/latest";
-    flake-aspects.url = "github:vic/flake-aspects/latest";
   };
 
   systems = [
