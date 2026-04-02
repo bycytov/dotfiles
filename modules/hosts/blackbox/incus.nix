@@ -10,6 +10,9 @@
             enable = true;
             ui.enable = true;
             preseed = {
+              config = {
+                "core.https_address" = ":8443";
+              };
               networks = [
                 {
                   name = "internalbr0";
@@ -36,6 +39,12 @@
                     root = {
                       path = "/";
                       pool = "incus";
+                      type = "disk";
+                    };
+                    data = {
+                      path = "/mnt/data";
+                      pool = "incus";
+                      source = "data";
                       type = "disk";
                     };
                   };
@@ -65,6 +74,14 @@
                   config = {
                     source = "incus";
                   };
+                }
+              ];
+              storage_volumes = [
+                {
+                  name = "data";
+                  pool = "incus";
+                  type = "custom";
+                  content_type = "filesystem";
                 }
               ];
             };
