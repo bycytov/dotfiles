@@ -2,7 +2,7 @@
 {
   den.aspects.incus = den.lib.perHost {
     nixos =
-      { lib, ... }:
+      { lib, pkgs, ... }:
       {
         virtualisation = {
           kvmgt.enable = lib.mkDefault true;
@@ -70,6 +70,18 @@
             };
           };
         };
+
+        environment.systemPackages = [
+          # Shell script to create incus lxc image from nixos config
+          (pkgs.writeShellScriptBin "nixos-update-lxc-image" ''
+            HOST=$1
+            if [ -z "$HOST" ]; then echo "Usage: nixos-update-lxc-image <hostname>"; exit 1; fi
+            METADATA=$(nix build ".#nixosConfigurations.$HOST.config.system.build.metadata" --no-link --print-out-paths)
+            SQUASHFS=$(nix build ".#nixosConfigurations.$HOST.config.system.build.squashfs" --no-link --print-out-paths)
+            incus image delete "nixos/custom/$HOST" || true
+            incus image import --alias "nixos/custom/$HOST" "$METADATA"/tarball/*.tar.xz "$SQUASHFS"/*.squashfs
+          '')
+        ];
       };
   };
 }
