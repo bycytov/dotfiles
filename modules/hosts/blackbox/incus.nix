@@ -38,12 +38,12 @@
                     };
                     root = {
                       path = "/";
-                      pool = "incus";
+                      pool = "default";
                       type = "disk";
                     };
                     data = {
                       path = "/mnt/data";
-                      pool = "incus";
+                      pool = "default";
                       source = "data";
                       type = "disk";
                     };
@@ -61,12 +61,12 @@
                     };
                     root = {
                       path = "/";
-                      pool = "incus";
+                      pool = "default";
                       type = "disk";
                     };
                     data = {
                       path = "/mnt/data";
-                      pool = "incus";
+                      pool = "default";
                       source = "data";
                       type = "disk";
                     };
@@ -75,19 +75,25 @@
               ];
               storage_pools = [
                 {
-                  name = "incus";
+                  name = "default";
                   driver = "zfs";
                   config = {
-                    source = "incus";
+                    source = "/dev/nvme1n1";
+                    "zfs.pool_name" = "incus";
                   };
                 }
               ];
               storage_volumes = [
                 {
                   name = "data";
-                  pool = "incus";
+                  pool = "default";
                   type = "custom";
                   content_type = "filesystem";
+                  config = {
+                    "security.shifted" = "true";
+                    "snapshots.expiry" = "5d";
+                    "snapshots.schedule" = "@daily";
+                  };
                 }
               ];
             };

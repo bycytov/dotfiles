@@ -1,16 +1,21 @@
 # Defines all hosts + users
 { inputs, lib, ... }:
 {
-  den.schema.user.classes = lib.mkDefault [ "homeManager" ];
+  den = {
+    schema.user.classes = lib.mkDefault [ "homeManager" ];
+    hosts = {
+      x86_64-linux = {
 
-  den.hosts.x86_64-linux.blackbox.users.sam = { };
+        blackbox.users.sam = { };
 
-  den.hosts.x86_64-linux.worker-1.users.sam = { };
+        worker-1.ip = "192.168.1.30/24";
 
-  den.hosts.x86_64-linux.worker-2 = {
-    instantiate = inputs.nixpkgs-stable.lib.nixosSystem;
-    home-manager.module = inputs.home-manager-stable.nixosModules.home-manager;
-    users.sam = { };
+        worker-2 = {
+          instantiate = inputs.nixpkgs-stable.lib.nixosSystem;
+          home-manager.module = inputs.home-manager-stable.nixosModules.home-manager;
+          ip = "192.168.1.31/24";
+        };
+      };
+    };
   };
 }
-

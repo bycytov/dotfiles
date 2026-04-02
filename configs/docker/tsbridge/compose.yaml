@@ -44,4 +44,3 @@ services:
 networks:
   tsbridge:
     name: tsbridge
-    external: true

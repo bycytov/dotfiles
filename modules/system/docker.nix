@@ -9,6 +9,7 @@
           dates = lib.mkDefault "weekly";
         };
       };
+      environment.systemPackages = [ pkgs.docker-compose ];
     };
   };
 }
