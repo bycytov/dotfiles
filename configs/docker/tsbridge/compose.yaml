@@ -10,7 +10,7 @@ services:
       - tsbridge
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
-      - /opt/tsbridge:/var/lib/tsbridge
+      - /mnt/data/tsbridge:/var/lib/tsbridge
     environment:
       - TS_OAUTH_CLIENT_ID=${TS_OAUTH_CLIENT_ID}
       - TS_OAUTH_CLIENT_SECRET=${TS_OAUTH_CLIENT_SECRET}

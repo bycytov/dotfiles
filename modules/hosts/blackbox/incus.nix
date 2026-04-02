@@ -64,6 +64,12 @@
                       pool = "incus";
                       type = "disk";
                     };
+                    data = {
+                      path = "/mnt/data";
+                      pool = "incus";
+                      source = "data";
+                      type = "disk";
+                    };
                   };
                 }
               ];
