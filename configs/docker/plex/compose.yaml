@@ -6,8 +6,8 @@ services:
     devices:
       - /dev/dri:/dev/dri
     environment:
-      - PUID=1000
-      - PGID=1000
+      - PUID=0
+      - PGID=0
       - UMASK=002
       - TZ=America/Chicago
       - WEBUI_PORTS=32400/tcp
@@ -17,7 +17,7 @@ services:
       - PLEX_BETA_INSTALL=false
       - PLEX_PURGE_CODECS=false
     volumes:
-      - /opt/plex:/config
-      - /mnt/nvme:/pool
+      - /mnt/data/plex:/config
+      - /mnt/pool:/pool
       - /tmp/plex:/transcode
     restart: unless-stopped

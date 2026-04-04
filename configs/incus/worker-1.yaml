@@ -1,0 +1,27 @@
+architecture: x86_64
+config:
+  raw.idmap: |
+    uid 1500 0
+    gid 1500 0
+  security.nesting: "true"
+  security.privileged: "false"
+  security.protection.shift: "true"
+devices:
+  disk-device-1:
+    path: /mnt/pool
+    source: /mnt/pool
+    type: disk
+  docker-dotfiles:
+    path: /opt/docker
+    shift: "true"
+    source: /home/sam/dotfiles/configs/docker
+    type: disk
+  gpu-1:
+    gputype: physical
+    pci: "0000:00:02.0"
+    type: gpu
+ephemeral: false
+profiles:
+- bridged
+stateful: false
+description: Docker NixOS LXC

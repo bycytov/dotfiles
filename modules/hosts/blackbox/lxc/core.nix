@@ -17,6 +17,7 @@
           imports = [ "${modulesPath}/virtualisation/lxc-container.nix" ];
 
           networking = {
+            firewall.enable = false;
             dhcpcd.enable = false;
             useDHCP = false;
             useHostResolvConf = false;

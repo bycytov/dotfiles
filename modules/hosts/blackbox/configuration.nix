@@ -43,7 +43,6 @@
           fastfetch
           iotop
           intel-gpu-tools
-          mergerfs
           ncdu
           tmux
           wget

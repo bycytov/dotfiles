@@ -1,0 +1,194 @@
+services:
+  beets:
+    image: lscr.io/linuxserver/beets:latest
+    container_name: beets
+    volumes:
+      - /mnt/data/beets:/config
+      - /mnt/pool:/downloads
+    environment:
+      - PUID=0
+      - PGID=0
+      - TZ=America/Chicago
+    networks:
+      - tsbridge
+    restart: unless-stopped
+
+  kometa:
+    image: kometateam/kometa:latest
+    container_name: kometa
+    volumes:
+      - /mnt/data/kometa:/config
+    environment:
+      - TZ=America/Chicago
+      - KOMETA_RUN=False
+      - KOMETA_METADATA_ONLY=False
+      - KOMETA_COLLECTIONS_ONLY=False
+    networks:
+      - tsbridge
+    restart: unless-stopped
+
+  prowlarr:
+    image: ghcr.io/hotio/prowlarr:latest
+    container_name: prowlarr
+    volumes:
+      - /mnt/data/prowlarr:/config
+    environment:
+      - TZ=America/Chicago
+      - PUID=0
+      - GUID=0
+    ports:
+      - '9696:9696'
+    networks:
+      - tsbridge
+    restart: unless-stopped
+    labels:
+      - tsbridge.enabled=true
+      - tsbridge.service.name=search
+      - tsbridge.service.port=9696
+      - tsbridge.service.funnel_enabled=false
+      - tsbridge.service.ephemeral=true
+
+  qbittorrent:
+    image: ghcr.io/hotio/qbittorrent:latest
+    container_name: qbittorrent
+    volumes:
+      - /mnt/data/qbittorrent:/config
+      - /mnt/pool:/downloads
+    environment:
+      - PGID=0
+      - PUID=0
+      - TZ=America/Chicago
+      - VPN_ENABLED=true
+      - VPN_CONF=wg0
+      - VPN_PROVIDER=pia
+      - VPN_LAN_NETWORK=192.168.1.0/24
+      - VPN_AUTO_PORT_FORWARD=true
+      - VPN_PIA_USER=${VPN_PIA_USER}
+      - VPN_PIA_PASS=${VPN_PIA_PASS}
+      - VPN_PIA_PREFERRED_REGION=ca_toronto
+    ports:
+      - '8082:8080/tcp'
+    networks:
+      - tsbridge
+    restart: unless-stopped
+    cap_add:
+      - NET_ADMIN
+    sysctls:
+      - net.ipv4.conf.all.src_valid_mark=1
+      - net.ipv6.conf.all.disable_ipv6=1
+
+  qui:
+    image: ghcr.io/hotio/qui:latest
+    container_name: qui
+    volumes:
+      - /mnt/data/qui:/config
+      - /mnt/data/qbittorrent:/qbittorrent:ro
+      - /mnt/pool:/downloads
+    environment:
+      - PUID=0
+      - PGID=0
+      - UMASK=002
+      - TZ=America/Chicago
+    ports:
+      - '7476:7476'
+    networks:
+      - tsbridge
+    restart: unless-stopped
+    labels:
+      - tsbridge.enabled=true
+      - tsbridge.service.name=torrent
+      - tsbridge.service.port=7476
+      - tsbridge.service.funnel_enabled=false
+      - tsbridge.service.ephemeral=true
+
+  radarr:
+    image: ghcr.io/hotio/radarr:latest
+    container_name: radarr
+    volumes:
+      - /mnt/data/radarr:/config
+      - /mnt/pool:/downloads
+    environment:
+      - TZ=America/Chicago
+      - PUID=0
+      - GUID=0
+    ports:
+      - '7878:7878/tcp'
+    networks:
+      - tsbridge
+    restart: unless-stopped
+    labels:
+      - tsbridge.enabled=true
+      - tsbridge.service.name=movies
+      - tsbridge.service.port=7878
+      - tsbridge.service.funnel_enabled=false
+      - tsbridge.service.ephemeral=true
+
+  sabnzbd:
+    image: ghcr.io/hotio/sabnzbd:latest
+    container_name: sabnzbd
+    volumes:
+      - /mnt/data/sabnzbd:/config
+      - /mnt/pool:/downloads
+    environment:
+      - TZ=America/Chicago
+      - PUID=0
+      - GUID=0
+    ports:
+      - '8080:8080/tcp'
+    networks:
+      - tsbridge
+    restart: unless-stopped
+    labels:
+      - tsbridge.enabled=true
+      - tsbridge.service.name=nzb
+      - tsbridge.service.port=8080
+      - tsbridge.service.funnel_enabled=false
+      - tsbridge.service.ephemeral=true
+
+  sonarr:
+    image: ghcr.io/hotio/sonarr:latest
+    container_name: sonarr
+    volumes:
+      - /mnt/data/sonarr:/config
+      - /mnt/pool:/downloads
+    environment:
+      - TZ=America/Chicago
+      - PUID=0
+      - GUID=0
+    ports:
+      - '8989:8989/tcp'
+    networks:
+      - tsbridge
+    restart: unless-stopped
+    labels:
+      - tsbridge.enabled=true
+      - tsbridge.service.name=tv
+      - tsbridge.service.port=8989
+      - tsbridge.service.funnel_enabled=false
+      - tsbridge.service.ephemeral=true
+
+  tautulli:
+    image: ghcr.io/hotio/tautulli:latest
+    container_name: tautulli
+    volumes:
+      - /mnt/data/tautulli:/config
+    environment:
+      - TZ=America/Chicago
+      - PUID=0
+      - GUID=0
+    ports:
+      - '8181:8181/tcp'
+    networks:
+      - tsbridge
+    restart: unless-stopped
+    labels:
+      - tsbridge.enabled=true
+      - tsbridge.service.name=stats
+      - tsbridge.service.port=8181
+      - tsbridge.service.funnel_enabled=false
+      - tsbridge.service.ephemeral=true
+
+networks:
+  tsbridge:
+    name: tsbridge
+    external: true
