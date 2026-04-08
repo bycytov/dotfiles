@@ -6,7 +6,15 @@
     hosts = {
       x86_64-linux = {
 
-        blackbox.users.sam = { };
+        blackbox = {
+          users.sam = { };
+          networking = {
+            interfaces = [ "enp3s0" ];
+            address = "192.168.1.3";
+            gateway = "192.168.1.1";
+            nameservers = [ "192.168.1.1" ];
+          };
+        };
 
         worker-1.ip = "192.168.1.30/24";
 

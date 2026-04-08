@@ -3,6 +3,7 @@
   den.aspects.blackbox = {
     includes = with den.aspects; [
       stable # nixpkgs-stable overlay
+      network-bridge
       nix-config # nix daemon settings
       incus # incus virtualisation
       (den._.tty-autologin "sam")
@@ -19,23 +20,6 @@
         boot.zfs.forceImportRoot = false;
         boot.zfs.extraPools = [ "incus" ];
         networking.hostId = "38ce88fa";
-
-        networking = {
-          firewall.enable = false;
-          nftables.enable = true;
-          interfaces.br0 = {
-            useDHCP = false;
-            ipv4.addresses = [
-              {
-                address = "192.168.1.3";
-                prefixLength = 20;
-              }
-            ];
-          };
-          bridges.br0.interfaces = [ "enp3s0" ];
-          defaultGateway = "192.168.1.1";
-          nameservers = [ "192.168.1.1" ];
-        };
 
         environment.systemPackages = with pkgs; [
           btop
