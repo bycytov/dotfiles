@@ -111,14 +111,28 @@
             incus image import --alias "nixos/custom/$HOST" "$METADATA"/tarball/*.tar.xz "$SQUASHFS"/*.squashfs
           '')
         ];
-        users.users.root.subUidRanges = [
-          { startUid = 1500; count = 1; }
-          { startUid = 1000000; count = 1000000000; }
-        ];
-        users.users.root.subGidRanges = [
-          { startGid = 1500; count = 1; }
-          { startGid = 1000000; count = 1000000000; }
-        ];
+
+        # map container root to docker user on host
+        # see configs/incus/worker-1.yaml raw.idmap
+        users = {
+          users = {
+            root.subUidRanges = [
+              { startUid = 1500; count = 1; }
+              { startUid = 1000000; count = 1000000000; }
+            ];
+            root.subGidRanges = [
+              { startGid = 1500; count = 1; }
+              { startGid = 1000000; count = 1000000000; }
+            ];
+            docker = {
+              isSystemUser = true;
+              uid = 1500;
+              group = "docker";
+            };
+          };
+          groups.docker.gid = 1500;
+        
+        };
       };
   };
 }

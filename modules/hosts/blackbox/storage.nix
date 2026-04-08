@@ -39,15 +39,6 @@
       };
     };
 
-    users = {
-      users.docker = {
-        isSystemUser = true;
-        uid = 1500;
-        group = "docker";
-      };
-      groups.docker.gid = 1500;
-    };
-
     environment.systemPackages = [ pkgs.mergerfs ];
   };
 }
