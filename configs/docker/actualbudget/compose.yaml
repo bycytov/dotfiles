@@ -2,8 +2,6 @@ services:
   actualbudget:
     image: docker.io/actualbudget/actual-server:latest
     container_name: actualbudget
-    networks:
-      - tsbridge
     volumes:
       - /mnt/data/actualbudget:/data
       - /mnt/data/tsbridge/budget/certs:/certs
@@ -12,6 +10,9 @@ services:
       - ACTUAL_HTTPS_CERT=/certs/budget.${TS_TAILNET_NAME}.crt
       - ACTUAL_UPLOAD_FILE_SIZE_LIMIT_MB=50
       - ACTUAL_UPLOAD_FILE_SYNC_SIZE_LIMIT_MB=50
+    networks:
+      - tsbridge
+    restart: unless-stopped
     labels:
       - tsbridge.enabled=true
       - tsbridge.service.name=budget
@@ -19,9 +20,6 @@ services:
       - tsbridge.service.backend_addr=https://actualbudget:5006
       - tsbridge.service.insecure_skip_verify=true
       - tsbridge.service.ephemeral=true
-    restart: unless-stopped
-    ports:
-      - 5006:5006
 networks:
   tsbridge:
     name: tsbridge

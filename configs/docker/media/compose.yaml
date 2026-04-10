@@ -36,8 +36,6 @@ services:
       - TZ=America/Chicago
       - PUID=0
       - GUID=0
-    ports:
-      - '9696:9696'
     networks:
       - tsbridge
     restart: unless-stopped
@@ -66,8 +64,6 @@ services:
       - VPN_PIA_USER=${VPN_PIA_USER}
       - VPN_PIA_PASS=${VPN_PIA_PASS}
       - VPN_PIA_PREFERRED_REGION=ca_toronto
-    ports:
-      - '8082:8080/tcp'
     networks:
       - tsbridge
     restart: unless-stopped
@@ -89,8 +85,6 @@ services:
       - PGID=0
       - UMASK=002
       - TZ=America/Chicago
-    ports:
-      - '7476:7476'
     networks:
       - tsbridge
     restart: unless-stopped
@@ -111,8 +105,6 @@ services:
       - TZ=America/Chicago
       - PUID=0
       - GUID=0
-    ports:
-      - '7878:7878/tcp'
     networks:
       - tsbridge
     restart: unless-stopped
@@ -133,8 +125,6 @@ services:
       - TZ=America/Chicago
       - PUID=0
       - GUID=0
-    ports:
-      - '8080:8080/tcp'
     networks:
       - tsbridge
     restart: unless-stopped
@@ -155,8 +145,6 @@ services:
       - TZ=America/Chicago
       - PUID=0
       - GUID=0
-    ports:
-      - '8989:8989/tcp'
     networks:
       - tsbridge
     restart: unless-stopped
@@ -176,8 +164,6 @@ services:
       - TZ=America/Chicago
       - PUID=0
       - GUID=0
-    ports:
-      - '8181:8181/tcp'
     networks:
       - tsbridge
     restart: unless-stopped

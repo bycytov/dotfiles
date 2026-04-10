@@ -2,9 +2,10 @@ services:
   plex:
     image: ghcr.io/hotio/plex:latest
     container_name: plex
-    network_mode: host
-    devices:
-      - /dev/dri:/dev/dri
+    volumes:
+      - /mnt/data/plex:/config
+      - /mnt/pool:/pool
+      - /tmp/plex:/transcode
     environment:
       - PUID=0
       - PGID=0
@@ -16,8 +17,7 @@ services:
       - PLEX_NO_AUTH_NETWORKS=192.168.1.0/24
       - PLEX_BETA_INSTALL=false
       - PLEX_PURGE_CODECS=false
-    volumes:
-      - /mnt/data/plex:/config
-      - /mnt/pool:/pool
-      - /tmp/plex:/transcode
+    network_mode: host
     restart: unless-stopped
+    devices:
+      - /dev/dri:/dev/dri
