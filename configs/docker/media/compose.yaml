@@ -27,6 +27,17 @@ services:
       - tsbridge
     restart: unless-stopped
 
+  plextraktsync:
+    image: ghcr.io/taxel/plextraktsync:latest
+    container_name: plextraktsync
+    volumes:
+      - /mnt/data/plextraktsync:/app/config
+    environment:
+      - TZ=America/Chicago
+    networks:
+      - tsbridge
+    command: sync
+
   prowlarr:
     image: ghcr.io/hotio/prowlarr:latest
     container_name: prowlarr
@@ -134,6 +145,21 @@ services:
       - tsbridge.service.port=8080
       - tsbridge.service.funnel_enabled=false
       - tsbridge.service.ephemeral=true
+
+  scheduler:
+    image: mcuadros/ofelia:latest
+    container_name: scheduler
+    depends_on:
+      - plextraktsync
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    command: daemon --docker
+    networks:
+      - tsbridge
+    restart: unless-stopped
+    labels:
+      - ofelia.job-run.plextraktsync.schedule=@every 6h
+      - ofelia.job-run.plextraktsync.container=plextraktsync
 
   sonarr:
     image: ghcr.io/hotio/sonarr:latest
