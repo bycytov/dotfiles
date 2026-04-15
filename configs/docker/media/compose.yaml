@@ -20,12 +20,9 @@ services:
       - /mnt/data/kometa:/config
     environment:
       - TZ=America/Chicago
-      - KOMETA_RUN=False
-      - KOMETA_METADATA_ONLY=False
-      - KOMETA_COLLECTIONS_ONLY=False
+      - KOMETA_RUN=true
     networks:
       - tsbridge
-    restart: unless-stopped
 
   plextraktsync:
     image: ghcr.io/taxel/plextraktsync:latest
@@ -147,17 +144,19 @@ services:
       - tsbridge.service.ephemeral=true
 
   scheduler:
-    image: mcuadros/ofelia:latest
+    image: ghcr.io/netresearch/ofelia:latest
     container_name: scheduler
-    depends_on:
-      - plextraktsync
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
-    command: daemon --docker
+    environment:
+      - TZ=America/Chicago
+    command: daemon
     networks:
       - tsbridge
     restart: unless-stopped
     labels:
+      - ofelia.job-run.kometa.schedule=0 5 * * *
+      - ofelia.job-run.kometa.container=kometa
       - ofelia.job-run.plextraktsync.schedule=@every 6h
       - ofelia.job-run.plextraktsync.container=plextraktsync
 
