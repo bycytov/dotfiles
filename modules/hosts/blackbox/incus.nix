@@ -78,7 +78,8 @@
                   name = "default";
                   driver = "zfs";
                   config = {
-                    source = "/dev/nvme1n1";
+                    # source = "/dev/nvme1n1"; # if starting from an unpartitioned disk
+                    source = "incus"; # after disk is setup
                     "zfs.pool_name" = "incus";
                   };
                 }
