@@ -123,6 +123,20 @@ services:
       - tsbridge.service.funnel_enabled=false
       - tsbridge.service.ephemeral=true
 
+  rmlint:
+    build:
+      context: .
+      no_cache: true
+      dockerfile_inline: |
+        FROM alpine:edge
+        RUN apk add --no-cache bash --repository=https://dl-cdn.alpinelinux.org/alpine/edge/testing rmlint
+    container_name: rmlint
+    volumes:
+      - /mnt/pool:/data
+    networks:
+      - tsbridge
+    command: bash -c "rmlint /data -C -c sh:hardlink -o sh:/tmp/rmlint.sh -o stats:/dev/stderr && bash /tmp/rmlint.sh -d"
+
   sabnzbd:
     image: ghcr.io/hotio/sabnzbd:latest
     container_name: sabnzbd
@@ -150,15 +164,17 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro
     environment:
       - TZ=America/Chicago
-    command: daemon
     networks:
       - tsbridge
+    command: daemon
     restart: unless-stopped
     labels:
       - ofelia.job-run.kometa.schedule=0 5 * * *
       - ofelia.job-run.kometa.container=kometa
       - ofelia.job-run.plextraktsync.schedule=@every 6h
       - ofelia.job-run.plextraktsync.container=plextraktsync
+      - ofelia.job-run.rmlint.schedule=0 0 5 * *
+      - ofelia.job-run.rmlint.container=rmlint
 
   sonarr:
     image: ghcr.io/hotio/sonarr:latest
