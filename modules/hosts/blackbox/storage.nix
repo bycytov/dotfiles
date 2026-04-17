@@ -35,10 +35,13 @@
           "dropcacheonclose=true"
           "category.create=pfrd"
           "func.getattr=newest"
+          "gid=1500"
+          "umask=007"
         ];
       };
     };
 
     environment.systemPackages = [ pkgs.mergerfs ];
+    users.groups.pool.gid = 1500;
   };
 }
