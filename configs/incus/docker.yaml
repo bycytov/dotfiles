@@ -1,0 +1,16 @@
+architecture: x86_64
+config:
+  security.idmap.base: 1000000
+  security.idmap.size: 65536
+  security.nesting: "true"
+  security.privileged: "false"
+  security.protection.shift: "true"
+ephemeral: false
+profiles:
+- default
+- bridged
+- pool
+- docker-configs
+- gpu
+stateful: false
+description: Docker NixOS LXC

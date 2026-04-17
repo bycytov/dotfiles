@@ -1,4 +1,4 @@
-# update-lxc-image <hostnamee>
+# nixos-update-lxc-image <hostname>
 # incus launch nixos/custom/<hostname> <hostname> < ./nixoslxc.yaml
 architecture: x86_64
 config:

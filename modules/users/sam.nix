@@ -26,7 +26,7 @@
 
       nixos = { lib, ... }: {
         security.sudo.wheelNeedsPassword = lib.mkDefault false;
-        users.users.sam.extraGroups = [ "docker" "incus-admin" ];
+        users.users.sam.extraGroups = [ "pool" "incus-admin" ];
       };
     };
   };

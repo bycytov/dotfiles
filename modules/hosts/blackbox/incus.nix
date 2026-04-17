@@ -31,11 +31,6 @@
                   name = "default";
                   description = "Default Incus Profile";
                   devices = {
-                    eth0 = {
-                      name = "eth0";
-                      network = "internalbr0";
-                      type = "nic";
-                    };
                     root = {
                       path = "/";
                       pool = "default";
@@ -59,16 +54,55 @@
                       parent = "br0";
                       type = "nic";
                     };
-                    root = {
-                      path = "/";
-                      pool = "default";
+                  };
+                }
+                {
+                  name = "nat";
+                  description = "Internal NAT'd network";
+                  devices = {
+                    eth0 = {
+                      name = "eth0";
+                      network = "internalbr0";
+                      type = "nic";
+                    };
+                  };
+                }
+                {
+                  name = "docker-configs";
+                  description = "Docker compose configs from dotfiles";
+                  devices = {
+                    docker-dotfiles = {
+                      path = "/opt/docker";
+                      shift = "true";
+                      source = "/home/sam/dotfiles/configs/docker";
                       type = "disk";
                     };
-                    data = {
-                      path = "/mnt/data";
-                      pool = "default";
-                      source = "data";
+                  };
+                }
+                {
+                  name = "pool";
+                  description = "Access to /mnt/pool";
+                  config = {
+                    "raw.idmap" = ''
+                      gid 1500 0
+                    '';
+                  };
+                  devices = {
+                    pool = {
+                      path = "/mnt/pool";
+                      source = "/mnt/pool";
                       type = "disk";
+                    };
+                  };
+                }
+                {
+                  name = "gpu";
+                  description = "Intel GPU passthrough";
+                  devices = {
+                    gpu-1 = {
+                      gputype = "physical";
+                      pci = "0000:00:02.0";
+                      type = "gpu";
                     };
                   };
                 }
@@ -102,37 +136,51 @@
         };
 
         environment.systemPackages = [
-          # Shell script to create incus lxc image from nixos config
+          # Shell script to create incus lxc image from nixos config with option to auto deploy from template
           (pkgs.writeShellScriptBin "nixos-update-lxc-image" ''
             HOST=$1
-            if [ -z "$HOST" ]; then echo "Usage: nixos-update-lxc-image <hostname>"; exit 1; fi
+            if [ -z "$HOST" ]; then echo "Usage: nixos-update-lxc-image <hostname> [--deploy]"; exit 1; fi
+
             METADATA=$(nix build ".#nixosConfigurations.$HOST.config.system.build.metadata" --no-link --print-out-paths)
             SQUASHFS=$(nix build ".#nixosConfigurations.$HOST.config.system.build.squashfs" --no-link --print-out-paths)
             incus image delete "nixos/custom/$HOST" || true
             incus image import --alias "nixos/custom/$HOST" "$METADATA"/tarball/*.tar.xz "$SQUASHFS"/*.squashfs
+
+            if [ "''${2:-}" = "--deploy" ]; then
+              TEMPLATE="$(git rev-parse --show-toplevel)/configs/incus/''${HOST}.yaml"
+
+              if [ ! -f "$TEMPLATE" ]; then
+                echo "No template found at $TEMPLATE"
+                exit 1
+              fi
+
+              if incus info "$HOST" &>/dev/null; then
+                echo "Stopping and deleting existing instance $HOST..."
+                incus stop "$HOST" --force 2>/dev/null || true
+                incus delete "$HOST"
+              fi
+
+              echo "Launching $HOST from nixos/custom/$HOST..."
+              incus launch "nixos/custom/$HOST" "$HOST" < "$TEMPLATE"
+            fi
           '')
         ];
 
-        # map container root to docker user on host
-        # see configs/incus/worker-1.yaml raw.idmap
+        # allow host to map lxc root group to host pool group
         users = {
           users = {
-            root.subUidRanges = [
-              { startUid = 1500; count = 1; }
-              { startUid = 1000000; count = 1000000000; }
-            ];
             root.subGidRanges = [
               { startGid = 1500; count = 1; }
               { startGid = 1000000; count = 1000000000; }
             ];
+            # map lxc root to host docker user
             docker = {
               isSystemUser = true;
-              uid = 1500;
-              group = "docker";
+              uid = 1000000;
+              group = "nogroup";
+              description = "docker LXC root";
             };
           };
-          groups.docker.gid = 1500;
-        
         };
       };
   };
