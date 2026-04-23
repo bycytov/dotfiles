@@ -23,7 +23,10 @@
         git
         nvim
       ];
+    };
 
+    # Everything sam wants on blackbox host
+    _.blackbox = {
       nixos = { lib, ... }: {
         security.sudo.wheelNeedsPassword = lib.mkDefault false;
         users.users.sam.extraGroups = [ "pool" "incus-admin" ];
