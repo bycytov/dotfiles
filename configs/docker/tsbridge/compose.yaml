@@ -24,3 +24,5 @@ services:
 networks:
   tsbridge:
     name: tsbridge
+    driver_opts:
+      com.docker.network.bridge.name: tsbridge
