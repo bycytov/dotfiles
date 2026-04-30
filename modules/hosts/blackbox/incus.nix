@@ -8,6 +8,7 @@
           kvmgt.enable = lib.mkDefault true;
           incus = {
             enable = true;
+            package = pkgs.incus;
             ui.enable = true;
             preseed = {
               config = {
@@ -132,6 +133,32 @@
                 }
               ];
             };
+          };
+        };
+
+        systemd.services.incus-remotes = {
+          description = "Configure Incus remote image servers";
+          wantedBy = [ "multi-user.target" ];
+          requires = [ "incus.service" ];
+          after = [ "incus.service" ];
+
+          serviceConfig = {
+            Type = "oneshot";
+            RemainAfterExit = true;
+            User = "sam";
+            ExecStart = pkgs.writeShellScript "incus-remotes" ''
+              # Idempotently add remotes — skip if already present
+              add_remote() {
+                local name=$1 url=$2 protocol=''${3:-simplestreams}
+                if ! ${pkgs.incus}/bin/incus remote list --format=csv | grep -q "^$name,"; then
+                  ${pkgs.incus}/bin/incus remote add "$name" "$url" --protocol="$protocol"
+                fi
+              }
+
+              add_remote "images" "https://images.linuxcontainers.org" simplestreams
+              # add more remotes here:
+              add_remote "docker" "https://docker.io" oci
+            '';
           };
         };
 
