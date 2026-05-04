@@ -1,0 +1,11 @@
+architecture: x86_64
+config:
+  security.nesting: "true"
+  security.privileged: "false"
+  security.protection.shift: "true"
+ephemeral: false
+profiles:
+- default
+- bridged
+stateful: false
+description: Stable NixOS LXC
