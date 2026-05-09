@@ -9,7 +9,7 @@
         blackbox = {
           users.sam = { };
           networking = {
-            interfaces = [ "enp3s0" ];
+            interfaces = [ "enp3s0" "enp4s0" ];
             address = "192.168.1.3";
             gateway = "192.168.1.1";
             nameservers = [ "192.168.1.1" ];
