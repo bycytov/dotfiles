@@ -1,0 +1,44 @@
+services:
+
+  book-drop:
+    build:
+      context: https://github.com/eitan12345om/book-drop.git
+      dockerfile: ./Dockerfile
+    container_name: book-drop
+    networks:
+      - tsbridge
+    restart: unless-stopped
+    labels:
+      - tsbridge.enabled=true
+      - tsbridge.service.name=kobo
+      - tsbridge.service.port=3001
+      - tsbridge.service.funnel_enabled=false
+      - tsbridge.service.ephemeral=true
+
+  calibre-web-automated:
+    image: crocodilestick/calibre-web-automated:latest
+    container_name: calibre-web-automated
+    volumes:
+      - /mnt/data/calibre-web-automated:/config
+      - /mnt/pool/data/cwa-book-ingest:/cwa-book-ingest
+      - /mnt/pool/books/ebook:/calibre-library
+    environment:
+      - PUID=0
+      - PGID=0
+      - TZ=America/Chicago
+      # Hardcover API Key required for Hardcover as a Metadata Provider, get one here: https://docs.hardcover.app/api/getting-started/
+      - HARDCOVER_TOKEN=your_hardcover_api_key_here
+    networks:
+      - tsbridge
+    restart: unless-stopped
+    labels:
+      - tsbridge.enabled=true
+      - tsbridge.service.name=books
+      - tsbridge.service.port=8083
+      - tsbridge.service.funnel_enabled=false
+      - tsbridge.service.ephemeral=true
+
+networks:
+  tsbridge:
+    name: tsbridge
+    external: true
