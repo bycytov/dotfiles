@@ -35,7 +35,6 @@
       environment.systemPackages = [ pkgs.lazydocker ];
 
       systemd.services = lib.mkMerge [
-        (mkComposeService { name = "plex"; composeFile = "/opt/docker/plex/compose.yaml"; })
         (mkComposeService { name = "tsbridge"; composeFile = "/opt/docker/tsbridge/compose.yaml"; })
         (mkComposeService { name = "media"; composeFile = "/opt/docker/media/compose.yaml"; requires = [ "docker-compose-tsbridge.service" ]; after = [ "docker-compose-tsbridge.service" ]; })
         (mkComposeService { name = "actualbudget"; composeFile = "/opt/docker/actualbudget/compose.yaml"; requires = [ "docker-compose-tsbridge.service" ]; after = [ "docker-compose-tsbridge.service" ]; })

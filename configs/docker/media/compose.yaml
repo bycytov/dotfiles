@@ -16,6 +16,9 @@ services:
   kometa:
     image: kometateam/kometa:latest
     container_name: kometa
+    depends_on:
+      plex:
+        condition: service_healthy
     volumes:
       - /mnt/data/kometa:/config
     environment:
@@ -24,9 +27,41 @@ services:
     networks:
       - tsbridge
 
+  plex:
+    image: ghcr.io/hotio/plex:latest
+    container_name: plex
+    volumes:
+      - /mnt/data/plex:/config
+      - /mnt/pool:/pool
+      - /tmp/plex:/transcode
+    environment:
+      - PUID=0
+      - PGID=0
+      - UMASK=002
+      - TZ=America/Chicago
+      - WEBUI_PORTS=32400/tcp
+      - PLEX_CLAIM_TOKEN= # visit plex.tv/claim leave blank after initial claim
+      - PLEX_ADVERTISE_URL=
+      - PLEX_NO_AUTH_NETWORKS=192.168.1.0/24
+      - PLEX_BETA_INSTALL=false
+      - PLEX_PURGE_CODECS=false
+    network_mode: host
+    restart: unless-stopped
+    healthcheck:
+      test: [ "CMD", "curl", "-fsS", "http://localhost:32400/identity" ]
+      start_period: 30s
+      interval: 10s
+      timeout: 10s
+      retries: 10
+    devices:
+      - /dev/dri:/dev/dri
+
   plextraktsync:
     image: ghcr.io/taxel/plextraktsync:latest
     container_name: plextraktsync
+    depends_on:
+      plex:
+        condition: service_healthy
     volumes:
       - /mnt/data/plextraktsync:/app/config
     environment:
