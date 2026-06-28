@@ -5,17 +5,9 @@
     inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  den.ctx.hm-host.includes = [
-    (den.lib.perHost {
-      nixos.home-manager = {
-        useUserPackages = lib.mkDefault true;
-        useGlobalPkgs = lib.mkDefault true;
-        backupFileExtension = lib.mkDefault "backup";
-      };
-    })
-  ];
-
-  den.ctx.hm-user.includes = [{
-    homeManager.home.stateVersion = lib.mkDefault "25.11";
-  }];
+  den.schema.host.nixos.home-manager = {
+    useUserPackages = lib.mkDefault true;
+    useGlobalPkgs = lib.mkDefault true;
+    backupFileExtension = lib.mkDefault "backup";
+  };
 }

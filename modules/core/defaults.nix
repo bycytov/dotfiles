@@ -12,6 +12,8 @@
       # set default shell for all users
       ( den._.user-shell "bash" )
     ];
+    nixos.system.stateVersion = "25.11";
+    homeManager.home.stateVersion = "25.11";
   };
 }
 

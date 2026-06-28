@@ -9,7 +9,7 @@
   flake-file.inputs = {
     nixpkgs.url = "https://channels.nixos.org/nixpkgs-unstable/nixexprs.tar.xz";
     flake-file.url = "github:vic/flake-file";
-    den.url = "github:vic/den/latest";
+    den.url = "github:denful/den/";
   };
 
   systems = [
