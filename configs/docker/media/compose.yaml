@@ -13,6 +13,59 @@ services:
       - tsbridge
     restart: unless-stopped
 
+  clonarr:
+    image: ghcr.io/prophetse7en/clonarr:latest
+    container_name: clonarr
+    volumes:
+      - /mnt/data/clonarr:/config
+    environment:
+      - TZ=America/Chicago
+      - PUID=0
+      - PGID=0
+    ports:
+      - '6060:6060'
+    networks:
+      - tsbridge
+    restart: unless-stopped
+    labels:
+      - tsbridge.enabled=false
+      - tsbridge.service.name=profile
+      - tsbridge.service.port=6060
+      - tsbridge.service.funnel_enabled=false
+      - tsbridge.service.ephemeral=true
+
+  crosswatch:
+    image: ghcr.io/cenodude/crosswatch:latest
+    container_name: crosswatch
+    volumes:
+      - /mnt/data/crosswatch:/config
+    environment:
+      - TZ=America/Chicago
+      - APP_UID=0
+      - APP_GID=0
+      - APP_USER=root
+      - APP_GROUP=root
+    ports:
+      - '8787:8787'
+    networks:
+      - tsbridge
+    restart: unless-stopped
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - >-
+          python -c "import json, urllib.request; data=json.load(urllib.request.urlopen('http://127.0.0.1:8787/healthz', timeout=5)); raise SystemExit(0 if data.get('ok') is True and data.get('status') == 'ok' else 1)"
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 20s
+    labels:
+      - tsbridge.enabled=false
+      - tsbridge.service.name=sync
+      - tsbridge.service.port=8787
+      - tsbridge.service.funnel_enabled=false
+      - tsbridge.service.ephemeral=true
+
   kometa:
     image: kometateam/kometa:latest
     container_name: kometa
@@ -55,20 +108,6 @@ services:
       retries: 10
     devices:
       - /dev/dri:/dev/dri
-
-  plextraktsync:
-    image: ghcr.io/taxel/plextraktsync:latest
-    container_name: plextraktsync
-    depends_on:
-      plex:
-        condition: service_healthy
-    volumes:
-      - /mnt/data/plextraktsync:/app/config
-    environment:
-      - TZ=America/Chicago
-    networks:
-      - tsbridge
-    command: sync
 
   prowlarr:
     image: ghcr.io/hotio/prowlarr:latest
@@ -158,6 +197,44 @@ services:
       - tsbridge.service.funnel_enabled=false
       - tsbridge.service.ephemeral=true
 
+  recommendations_movie:
+    build:
+      context: https://github.com/netplexflix/Movie-Recommendations-for-Plex.git#main
+      no_cache: true
+      dockerfile_inline: |
+        FROM python:3.11-slim
+        ENV PYTHONUNBUFFERED=1
+        WORKDIR /app
+        COPY . /app
+        RUN if [ -f requirements.txt ]; then pip install --no-cache-dir -r requirements.txt; fi
+        CMD ["python", "MRFP.py"]
+    container_name: recommendations_movie
+    volumes:
+      - /mnt/data/scripts/MRFP/config.yml:/app/config.yml
+      - /mnt/data/scripts/MRFP/cache:/app/cache
+      - /mnt/data/scripts/MRFP/logs:/app/Logs
+    networks:
+      - tsbridge
+
+  recommendations_show:
+    build:
+      context: https://github.com/netplexflix/TV-Show-Recommendations-for-Plex.git#main
+      no_cache: true
+      dockerfile_inline: |
+        FROM python:3.11-slim
+        ENV PYTHONUNBUFFERED=1
+        WORKDIR /app
+        COPY . /app
+        RUN if [ -f requirements.txt ]; then pip install --no-cache-dir -r requirements.txt; fi
+        CMD ["python", "TRFP.py"]
+    container_name: recommendations_show
+    volumes:
+      - /mnt/data/scripts/TRFP/config.yml:/app/config.yml
+      - /mnt/data/scripts/TRFP/cache:/app/cache
+      - /mnt/data/scripts/TRFP/logs:/app/Logs
+    networks:
+      - tsbridge
+
   rmlint:
     build:
       context: .
@@ -206,10 +283,12 @@ services:
     labels:
       - ofelia.job-run.kometa.schedule=0 5 * * *
       - ofelia.job-run.kometa.container=kometa
-      - ofelia.job-run.plextraktsync.schedule=@every 6h
-      - ofelia.job-run.plextraktsync.container=plextraktsync
       - ofelia.job-run.rmlint.schedule=0 0 5 * *
       - ofelia.job-run.rmlint.container=rmlint
+      - ofelia.job-run.recommendations_movie.schedule=55 4 * * *
+      - ofelia.job-run.recommendations_movie.container=recommendations_movie
+      - ofelia.job-run.recommendations_show.schedule=55 4 * * *
+      - ofelia.job-run.recommendations_show.container=recommendations_show
 
   sonarr:
     image: ghcr.io/hotio/sonarr:latest
