@@ -60,7 +60,7 @@ services:
       retries: 3
       start_period: 20s
     labels:
-      - tsbridge.enabled=false
+      - tsbridge.enabled=true
       - tsbridge.service.name=sync
       - tsbridge.service.port=8787
       - tsbridge.service.funnel_enabled=false
@@ -197,44 +197,6 @@ services:
       - tsbridge.service.funnel_enabled=false
       - tsbridge.service.ephemeral=true
 
-  recommendations_movie:
-    build:
-      context: https://github.com/netplexflix/Movie-Recommendations-for-Plex.git#main
-      no_cache: true
-      dockerfile_inline: |
-        FROM python:3.11-slim
-        ENV PYTHONUNBUFFERED=1
-        WORKDIR /app
-        COPY . /app
-        RUN if [ -f requirements.txt ]; then pip install --no-cache-dir -r requirements.txt; fi
-        CMD ["python", "MRFP.py"]
-    container_name: recommendations_movie
-    volumes:
-      - /mnt/data/scripts/MRFP/config.yml:/app/config.yml
-      - /mnt/data/scripts/MRFP/cache:/app/cache
-      - /mnt/data/scripts/MRFP/logs:/app/Logs
-    networks:
-      - tsbridge
-
-  recommendations_show:
-    build:
-      context: https://github.com/netplexflix/TV-Show-Recommendations-for-Plex.git#main
-      no_cache: true
-      dockerfile_inline: |
-        FROM python:3.11-slim
-        ENV PYTHONUNBUFFERED=1
-        WORKDIR /app
-        COPY . /app
-        RUN if [ -f requirements.txt ]; then pip install --no-cache-dir -r requirements.txt; fi
-        CMD ["python", "TRFP.py"]
-    container_name: recommendations_show
-    volumes:
-      - /mnt/data/scripts/TRFP/config.yml:/app/config.yml
-      - /mnt/data/scripts/TRFP/cache:/app/cache
-      - /mnt/data/scripts/TRFP/logs:/app/Logs
-    networks:
-      - tsbridge
-
   rmlint:
     build:
       context: .
@@ -285,10 +247,6 @@ services:
       - ofelia.job-run.kometa.container=kometa
       - ofelia.job-run.rmlint.schedule=0 0 5 * *
       - ofelia.job-run.rmlint.container=rmlint
-      - ofelia.job-run.recommendations_movie.schedule=55 4 * * *
-      - ofelia.job-run.recommendations_movie.container=recommendations_movie
-      - ofelia.job-run.recommendations_show.schedule=55 4 * * *
-      - ofelia.job-run.recommendations_show.container=recommendations_show
 
   sonarr:
     image: ghcr.io/hotio/sonarr:latest
