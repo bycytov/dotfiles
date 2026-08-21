@@ -23,10 +23,7 @@
     nixpkgs-stable.url = "nixpkgs/nixos-25.11";
     nvf = {
       url = "github:notashelf/nvf";
-      inputs = {
-        flake-parts.follows = "flake-parts";
-        nixpkgs.follows = "nixpkgs";
-      };
+      inputs.nixpkgs.follows = "nixpkgs";
     };
   };
 }
