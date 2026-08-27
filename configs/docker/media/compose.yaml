@@ -76,9 +76,9 @@ services:
       - /mnt/data/kometa:/config
     environment:
       - TZ=America/Chicago
-      - KOMETA_RUN=true
     networks:
       - tsbridge
+    restart: unless-stopped
 
   plex:
     image: ghcr.io/hotio/plex:latest
@@ -243,10 +243,10 @@ services:
     command: daemon
     restart: unless-stopped
     labels:
-      - ofelia.job-run.kometa.schedule=0 5 * * *
-      - ofelia.job-run.kometa.container=kometa
       - ofelia.job-run.rmlint.schedule=0 0 5 * *
       - ofelia.job-run.rmlint.container=rmlint
+      - ofelia.job-run.upgradinatorr.schedule=20 * * * *
+      - ofelia.job-run.upgradinatorr.container=upgradinatorr
 
   sonarr:
     image: ghcr.io/hotio/sonarr:latest
@@ -286,6 +286,15 @@ services:
       - tsbridge.service.port=8181
       - tsbridge.service.funnel_enabled=false
       - tsbridge.service.ephemeral=true
+
+  upgradinatorr:
+    image: python:3.11-slim
+    container_name: upgradinatorr
+    volumes:
+      - /mnt/data/scripts/upgradinatorr:/app
+    networks:
+      - tsbridge
+    command: sh -c 'pip install --no-cache-dir requests pyyaml && python /app/upgradinatorr.py'
 
 networks:
   tsbridge:
