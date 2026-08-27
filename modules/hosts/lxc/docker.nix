@@ -29,6 +29,7 @@
         autoPrune = {
           enable = lib.mkDefault true;
           dates  = lib.mkDefault "weekly";
+      	  flags = [ "--filter" "until=48h" ];
         };
       };
 
