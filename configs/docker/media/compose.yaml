@@ -80,6 +80,18 @@ services:
       - tsbridge
     restart: unless-stopped
 
+  ofelia:
+    image: ghcr.io/netresearch/ofelia:latest
+    container_name: ofelia
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    environment:
+      - TZ=America/Chicago
+    networks:
+      - tsbridge
+    command: daemon
+    restart: unless-stopped
+
   plex:
     image: ghcr.io/hotio/plex:latest
     container_name: plex
@@ -204,12 +216,17 @@ services:
       dockerfile_inline: |
         FROM alpine:edge
         RUN apk add --no-cache bash --repository=https://dl-cdn.alpinelinux.org/alpine/edge/testing rmlint
+        CMD sleep infinity
     container_name: rmlint
     volumes:
       - /mnt/pool:/data
     networks:
       - tsbridge
-    command: bash -c "rmlint /data -C -c sh:hardlink -o sh:/tmp/rmlint.sh -o stats:/dev/stderr && bash /tmp/rmlint.sh -d"
+    restart: unless-stopped
+    labels:
+      - ofelia.enabled=true
+      - ofelia.job-exec.rmlint.schedule=0 0 5 * *
+      - ofelia.job-exec.rmlint.command=bash -c "rmlint /data -C -c sh:hardlink -o sh:/tmp/rmlint.sh -o stats:/dev/stderr && bash /tmp/rmlint.sh -d"
 
   sabnzbd:
     image: ghcr.io/hotio/sabnzbd:latest
@@ -230,23 +247,6 @@ services:
       - tsbridge.service.port=8080
       - tsbridge.service.funnel_enabled=false
       - tsbridge.service.ephemeral=true
-
-  scheduler:
-    image: ghcr.io/netresearch/ofelia:latest
-    container_name: scheduler
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock:ro
-    environment:
-      - TZ=America/Chicago
-    networks:
-      - tsbridge
-    command: daemon
-    restart: unless-stopped
-    labels:
-      - ofelia.job-run.rmlint.schedule=0 0 5 * *
-      - ofelia.job-run.rmlint.container=rmlint
-      - ofelia.job-run.upgradinatorr.schedule=20 * * * *
-      - ofelia.job-run.upgradinatorr.container=upgradinatorr
 
   sonarr:
     image: ghcr.io/hotio/sonarr:latest
@@ -288,13 +288,24 @@ services:
       - tsbridge.service.ephemeral=true
 
   upgradinatorr:
-    image: python:3.11-slim
+    build:
+      context: .
+      dockerfile_inline: |
+        FROM python:3.11-slim
+        RUN pip install --no-cache-dir requests pyyaml
+        WORKDIR /app
+        RUN python -c "import urllib.request; urllib.request.urlretrieve('https://raw.githubusercontent.com/BZ00001/scripts/refs/heads/main/upgradinatorr/upgradinatorr.py', '/app/upgradinatorr.py')"
+        CMD sleep infinity
     container_name: upgradinatorr
     volumes:
-      - /mnt/data/scripts/upgradinatorr:/app
+      - /mnt/data/scripts/upgradinatorr/upgradinatorr.yml:/app/upgradinatorr.yml:ro
     networks:
       - tsbridge
-    command: sh -c 'pip install --no-cache-dir requests pyyaml && python /app/upgradinatorr.py'
+    restart: unless-stopped
+    labels:
+      - ofelia.enabled=true
+      - ofelia.job-exec.upgradinatorr.schedule=20 * * * *
+      - ofelia.job-exec.upgradinatorr.command=python /app/upgradinatorr.py
 
 networks:
   tsbridge:
