@@ -24,6 +24,8 @@
         boot.zfs.extraPools = [ "incus" ];
         networking.hostId = "38ce88fa";
 
+        services.tailscale.useRoutingFeatures = "server";
+
         environment.systemPackages = with pkgs; [
           btop
           curl
