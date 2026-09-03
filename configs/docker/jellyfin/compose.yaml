@@ -1,0 +1,42 @@
+services:
+
+  jellyfin:
+    image: ghcr.io/hotio/jellyfin:latest
+    container_name: jellyfin
+    volumes:
+      - /mnt/data/jellyfin:/config
+      - /mnt/pool:/downloads:ro
+    environment:
+      - PGID=0
+      - PUID=0
+      - TZ=America/Chicago
+      - VPN_ENABLED=true
+      - VPN_CONF=wg0
+      - VPN_PROVIDER=pia
+      - VPN_LAN_NETWORK=192.168.1.0/24
+      - VPN_AUTO_PORT_FORWARD=true
+      - VPN_PORT_REDIRECTS=8096/tcp
+      - VPN_PIA_USER=${VPN_PIA_USER}
+      - VPN_PIA_PASS=${VPN_PIA_PASS}
+      - VPN_PIA_PREFERRED_REGION=ca_toronto
+    networks:
+      - tsbridge
+    hostname: jellyfin
+    restart: unless-stopped
+    cap_add:
+      - NET_ADMIN
+    devices:
+      - /dev/dri:/dev/dri
+    labels:
+      - tsbridge.enabled=true
+      - tsbridge.service.name=jelly
+      - tsbridge.service.port=8096
+      - tsbridge.service.funnel_enabled=true
+      - tsbridge.service.ephemeral=true
+      - tsbridge.service.write_timeout=0s
+      - tsbridge.service.flush_interval=-1ms
+
+networks:
+  tsbridge:
+    name: tsbridge
+    external: true
