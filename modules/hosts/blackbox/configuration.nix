@@ -4,6 +4,7 @@
     includes = with den.aspects; [
       stable # nixpkgs-stable overlay
       network-bridge
+      nfs
       nix-config # nix daemon settings
       incus # incus virtualisation
       (den._.tty-autologin "sam")
