@@ -157,7 +157,7 @@ services:
       - VPN_AUTO_PORT_FORWARD=true
       - VPN_PIA_USER=${VPN_PIA_USER}
       - VPN_PIA_PASS=${VPN_PIA_PASS}
-      - VPN_PIA_PREFERRED_REGION=ca_toronto
+      - VPN_PIA_PREFERRED_REGION=ca_ontario
     networks:
       - tsbridge
     restart: unless-stopped
