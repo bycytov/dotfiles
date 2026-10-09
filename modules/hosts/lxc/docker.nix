@@ -33,9 +33,16 @@
         };
       };
 
-      environment.systemPackages = [ pkgs.lazydocker ];
+      nixpkgs.config.allowUnfree = true;
+      environment.systemPackages = with pkgs; [
+        _7zip-zstd-rar
+        lftp
+        tree
+        wget
+      ];
 
       systemd.services = lib.mkMerge [
+        (mkComposeService { name = "samba"; composeFile = "/opt/docker/samba/compose.yaml"; })
         (mkComposeService { name = "tsbridge"; composeFile = "/opt/docker/tsbridge/compose.yaml"; })
         (mkComposeService { name = "media"; composeFile = "/opt/docker/media/compose.yaml"; requires = [ "docker-compose-tsbridge.service" ]; after = [ "docker-compose-tsbridge.service" ]; })
         (mkComposeService { name = "actualbudget"; composeFile = "/opt/docker/actualbudget/compose.yaml"; requires = [ "docker-compose-tsbridge.service" ]; after = [ "docker-compose-tsbridge.service" ]; })
