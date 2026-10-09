@@ -20,7 +20,7 @@ services:
       - VPN_PIA_PASS=${VPN_PIA_PASS}
       - VPN_PIA_PREFERRED_REGION=ca_toronto
     networks:
-      - tsbridge
+      - docktail
     hostname: jellyfin
     restart: unless-stopped
     cap_add:
@@ -28,15 +28,15 @@ services:
     devices:
       - /dev/dri:/dev/dri
     labels:
-      - tsbridge.enabled=true
-      - tsbridge.service.name=jelly
-      - tsbridge.service.port=8096
-      - tsbridge.service.funnel_enabled=true
-      - tsbridge.service.ephemeral=true
-      - tsbridge.service.write_timeout=0s
-      - tsbridge.service.flush_interval=-1ms
+      - docktail.service.enable=true
+      - docktail.service.name=jelly
+      - docktail.service.port=8096
+      - docktail.service.service-port=443
+      - docktail.funnel.enable=true
+      - docktail.funnel.port=8096
+      - docktail.funnel.funnel-port=443
 
 networks:
-  tsbridge:
-    name: tsbridge
+  docktail:
+    name: docktail
     external: true

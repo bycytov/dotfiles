@@ -43,10 +43,18 @@
 
       systemd.services = lib.mkMerge [
         (mkComposeService { name = "samba"; composeFile = "/opt/docker/samba/compose.yaml"; })
-        (mkComposeService { name = "tsbridge"; composeFile = "/opt/docker/tsbridge/compose.yaml"; })
-        (mkComposeService { name = "media"; composeFile = "/opt/docker/media/compose.yaml"; requires = [ "docker-compose-tsbridge.service" ]; after = [ "docker-compose-tsbridge.service" ]; })
-        (mkComposeService { name = "actualbudget"; composeFile = "/opt/docker/actualbudget/compose.yaml"; requires = [ "docker-compose-tsbridge.service" ]; after = [ "docker-compose-tsbridge.service" ]; })
+        (mkComposeService { name = "docktail"; composeFile = "/opt/docker/docktail/compose.yaml"; after = [ "tailscaled.service" ]; })
+        (mkComposeService { name = "media"; composeFile = "/opt/docker/media/compose.yaml"; requires = [ "docker-compose-docktail.service" ]; after = [ "docker-compose-docktail.service" ]; })
+        (mkComposeService { name = "actualbudget"; composeFile = "/opt/docker/actualbudget/compose.yaml"; requires = [ "docker-compose-docktail.service" ]; after = [ "docker-compose-docktail.service" ]; })
       ];
+
+      # keep tailscale identity (and its tag) across LXC redeploys
+      systemd.tmpfiles.rules = [ "d /mnt/data/tailscale 0700 root root -" ];
+      fileSystems."/var/lib/tailscale" = {
+        device = "/mnt/data/tailscale";
+        fsType = "none";
+        options = [ "bind" ];
+      };
     };
   };
 }

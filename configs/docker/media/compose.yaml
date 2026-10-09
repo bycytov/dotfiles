@@ -10,7 +10,7 @@ services:
       - PGID=0
       - TZ=America/Chicago
     networks:
-      - tsbridge
+      - docktail
     restart: unless-stopped
 
   clonarr:
@@ -25,14 +25,8 @@ services:
     ports:
       - '6060:6060'
     networks:
-      - tsbridge
+      - docktail
     restart: unless-stopped
-    labels:
-      - tsbridge.enabled=false
-      - tsbridge.service.name=profile
-      - tsbridge.service.port=6060
-      - tsbridge.service.funnel_enabled=false
-      - tsbridge.service.ephemeral=true
 
   crosswatch:
     image: ghcr.io/cenodude/crosswatch:latest
@@ -48,7 +42,7 @@ services:
     ports:
       - '8787:8787'
     networks:
-      - tsbridge
+      - docktail
     restart: unless-stopped
     healthcheck:
       test:
@@ -60,11 +54,10 @@ services:
       retries: 3
       start_period: 20s
     labels:
-      - tsbridge.enabled=true
-      - tsbridge.service.name=sync
-      - tsbridge.service.port=8787
-      - tsbridge.service.funnel_enabled=false
-      - tsbridge.service.ephemeral=true
+      - docktail.service.enable=true
+      - docktail.service.name=sync
+      - docktail.service.port=8787
+      - docktail.service.service-port=443
 
   kometa:
     image: kometateam/kometa:latest
@@ -77,7 +70,7 @@ services:
     environment:
       - TZ=America/Chicago
     networks:
-      - tsbridge
+      - docktail
     restart: unless-stopped
 
   ofelia:
@@ -88,7 +81,7 @@ services:
     environment:
       - TZ=America/Chicago
     networks:
-      - tsbridge
+      - docktail
     command: daemon
     restart: unless-stopped
 
@@ -131,14 +124,13 @@ services:
       - PUID=0
       - PGID=0
     networks:
-      - tsbridge
+      - docktail
     restart: unless-stopped
     labels:
-      - tsbridge.enabled=true
-      - tsbridge.service.name=search
-      - tsbridge.service.port=9696
-      - tsbridge.service.funnel_enabled=false
-      - tsbridge.service.ephemeral=true
+      - docktail.service.enable=true
+      - docktail.service.name=search
+      - docktail.service.port=9696
+      - docktail.service.service-port=443
 
   qbittorrent:
     image: ghcr.io/hotio/qbittorrent:latest
@@ -159,7 +151,7 @@ services:
       - VPN_PIA_PASS=${VPN_PIA_PASS}
       - VPN_PIA_PREFERRED_REGION=ca_ontario
     networks:
-      - tsbridge
+      - docktail
     restart: unless-stopped
     cap_add:
       - NET_ADMIN
@@ -180,14 +172,13 @@ services:
       - UMASK=002
       - TZ=America/Chicago
     networks:
-      - tsbridge
+      - docktail
     restart: unless-stopped
     labels:
-      - tsbridge.enabled=true
-      - tsbridge.service.name=torrent
-      - tsbridge.service.port=7476
-      - tsbridge.service.funnel_enabled=false
-      - tsbridge.service.ephemeral=true
+      - docktail.service.enable=true
+      - docktail.service.name=torrent
+      - docktail.service.port=7476
+      - docktail.service.service-port=443
 
   radarr:
     image: ghcr.io/hotio/radarr:latest
@@ -200,14 +191,13 @@ services:
       - PUID=0
       - PGID=0
     networks:
-      - tsbridge
+      - docktail
     restart: unless-stopped
     labels:
-      - tsbridge.enabled=true
-      - tsbridge.service.name=movies
-      - tsbridge.service.port=7878
-      - tsbridge.service.funnel_enabled=false
-      - tsbridge.service.ephemeral=true
+      - docktail.service.enable=true
+      - docktail.service.name=movies
+      - docktail.service.port=7878
+      - docktail.service.service-port=443
 
   rmlint:
     build:
@@ -221,7 +211,7 @@ services:
     volumes:
       - /mnt/pool:/data
     networks:
-      - tsbridge
+      - docktail
     restart: unless-stopped
     labels:
       - ofelia.enabled=true
@@ -239,14 +229,13 @@ services:
       - PUID=0
       - PGID=0
     networks:
-      - tsbridge
+      - docktail
     restart: unless-stopped
     labels:
-      - tsbridge.enabled=true
-      - tsbridge.service.name=nzb
-      - tsbridge.service.port=8080
-      - tsbridge.service.funnel_enabled=false
-      - tsbridge.service.ephemeral=true
+      - docktail.service.enable=true
+      - docktail.service.name=nzb
+      - docktail.service.port=8080
+      - docktail.service.service-port=443
 
   sonarr:
     image: ghcr.io/hotio/sonarr:latest
@@ -259,14 +248,13 @@ services:
       - PUID=0
       - PGID=0
     networks:
-      - tsbridge
+      - docktail
     restart: unless-stopped
     labels:
-      - tsbridge.enabled=true
-      - tsbridge.service.name=tv
-      - tsbridge.service.port=8989
-      - tsbridge.service.funnel_enabled=false
-      - tsbridge.service.ephemeral=true
+      - docktail.service.enable=true
+      - docktail.service.name=tv
+      - docktail.service.port=8989
+      - docktail.service.service-port=443
 
   tautulli:
     image: ghcr.io/hotio/tautulli:latest
@@ -278,14 +266,13 @@ services:
       - PUID=0
       - PGID=0
     networks:
-      - tsbridge
+      - docktail
     restart: unless-stopped
     labels:
-      - tsbridge.enabled=true
-      - tsbridge.service.name=stats
-      - tsbridge.service.port=8181
-      - tsbridge.service.funnel_enabled=false
-      - tsbridge.service.ephemeral=true
+      - docktail.service.enable=true
+      - docktail.service.name=stats
+      - docktail.service.port=8181
+      - docktail.service.service-port=443
 
   upgradinatorr:
     build:
@@ -300,7 +287,7 @@ services:
     volumes:
       - /mnt/data/scripts/upgradinatorr/upgradinatorr.yml:/app/upgradinatorr.yml:ro
     networks:
-      - tsbridge
+      - docktail
     restart: unless-stopped
     labels:
       - ofelia.enabled=true
@@ -308,6 +295,6 @@ services:
       - ofelia.job-exec.upgradinatorr.command=python /app/upgradinatorr.py
 
 networks:
-  tsbridge:
-    name: tsbridge
+  docktail:
+    name: docktail
     external: true

@@ -6,14 +6,16 @@ services:
       dockerfile: ./Dockerfile
     container_name: book-drop
     networks:
-      - tsbridge
+      - docktail
     restart: unless-stopped
     labels:
-      - tsbridge.enabled=true
-      - tsbridge.service.name=kobo
-      - tsbridge.service.port=3001
-      - tsbridge.service.funnel_enabled=true
-      - tsbridge.service.ephemeral=true
+      - docktail.service.enable=true
+      - docktail.service.name=kobo
+      - docktail.service.port=3001
+      - docktail.service.service-port=443
+      - docktail.funnel.enable=true
+      - docktail.funnel.port=3001
+      - docktail.funnel.funnel-port=8443
 
   calibre-web-automated:
     image: ghcr.io/new-usemame/calibre-web-nextgen:latest
@@ -29,16 +31,15 @@ services:
       # Hardcover API Key required for Hardcover as a Metadata Provider, get one here: https://docs.hardcover.app/api/getting-started/
       - HARDCOVER_TOKEN=your_hardcover_api_key_here
     networks:
-      - tsbridge
+      - docktail
     restart: unless-stopped
     labels:
-      - tsbridge.enabled=true
-      - tsbridge.service.name=books
-      - tsbridge.service.port=8083
-      - tsbridge.service.funnel_enabled=false
-      - tsbridge.service.ephemeral=true
+      - docktail.service.enable=true
+      - docktail.service.name=books
+      - docktail.service.port=8083
+      - docktail.service.service-port=443
 
 networks:
-  tsbridge:
-    name: tsbridge
+  docktail:
+    name: docktail
     external: true
