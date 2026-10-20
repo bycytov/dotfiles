@@ -1,0 +1,28 @@
+services:
+  ps5upload:
+    image: ghcr.io/phantomptr/ps5upload-engine-webui:latest
+    container_name: ps5upload
+    restart: unless-stopped
+    networks:
+      - docktail
+    ports:
+      - 19113:19113
+    environment:
+      PS5_ADDR: "192.168.1.166"
+      PS5UPLOAD_ALLOW_IP: "172.18.0.1,192.168.1.0/24"
+      PS5UPLOAD_BROWSE_ROOTS: "/pool"
+      PS5UPLOAD_PKG_HOST_IP: "192.168.1.30"
+    user: "0:0"
+    volumes:
+      - /mnt/data/ps5upload:/data
+      - /mnt/pool:/pool:ro
+    labels:
+      - docktail.service.enable=true
+      - docktail.service.name=ps5
+      - docktail.service.port=19113
+      - docktail.service.service-port=443
+
+networks:
+  docktail:
+    name: docktail
+    external: true
