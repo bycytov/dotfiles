@@ -291,7 +291,7 @@ services:
     restart: unless-stopped
     labels:
       - ofelia.enabled=true
-      - ofelia.job-exec.upgradinatorr.schedule=20 * * * *
+      - ofelia.job-exec.upgradinatorr.schedule=0 9 * * *
       - ofelia.job-exec.upgradinatorr.command=python /app/upgradinatorr.py
 
 networks:
